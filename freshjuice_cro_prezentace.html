@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CRO Audit — www.freshjuice.cz</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:#111827;color:#fff;overflow-x:hidden;}
+
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:56px;background:rgba(5,46,22,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(134,239,172,.15);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:#86efac;}
+.nav-links{display:flex;gap:.25rem;}
+.nav-btn{padding:.45rem 1.1rem;border-radius:8px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;color:rgba(255,255,255,.65);background:transparent;transition:all .2s;}
+.nav-btn:hover,.nav-btn.active{color:#fff;background:rgba(134,239,172,.15);}
+.nav-score{font-size:.78rem;font-weight:600;color:#dc2626;background:#fee2e2;padding:.35rem .85rem;border-radius:20px;}
+
+.slide{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 0 60px;position:relative;}
+
+/* SLIDE 1 */
+#slide-title{background:linear-gradient(135deg,#052e16 0%,#0a4a25 50%,#052e16 100%);overflow:hidden;}
+.orb{position:absolute;border-radius:50%;}
+.orb1{width:600px;height:600px;top:-200px;right:-150px;background:radial-gradient(circle,rgba(34,197,94,.2) 0%,transparent 70%);}
+.orb2{width:400px;height:400px;bottom:-100px;left:-100px;background:radial-gradient(circle,rgba(134,239,172,.15) 0%,transparent 70%);}
+.title-content{max-width:1100px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;position:relative;z-index:1;}
+.title-label{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;background:rgba(134,239,172,.1);border:1px solid rgba(134,239,172,.25);padding:.4rem 1rem;border-radius:20px;margin-bottom:1.5rem;}
+.title-label::before{content:'';width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.title-h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,4.5vw,4.5rem);font-weight:900;line-height:1.05;color:#fff;margin-bottom:1rem;}
+.title-h1 span{color:#22c55e;}
+.title-sub{font-size:1.05rem;color:rgba(255,255,255,.6);font-weight:300;line-height:1.6;margin-bottom:2rem;max-width:500px;}
+.title-pills{display:flex;gap:.75rem;flex-wrap:wrap;}
+.pill{display:flex;align-items:center;gap:.6rem;padding:.6rem 1.2rem;border-radius:10px;border:1px solid rgba(134,239,172,.2);background:rgba(134,239,172,.05);font-size:.85rem;color:rgba(255,255,255,.8);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.pill:hover{background:rgba(134,239,172,.14);color:#fff;}
+.pill .num{color:#22c55e;font-weight:700;}
+.score-cards{display:flex;flex-direction:column;gap:1rem;}
+.score-card{background:rgba(255,255,255,.05);border:1px solid rgba(134,239,172,.15);border-radius:14px;padding:1.4rem 2rem;text-align:center;min-width:180px;cursor:pointer;transition:all .2s;}
+.score-card:hover{border-color:rgba(134,239,172,.35);background:rgba(255,255,255,.08);}
+.score-val{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;line-height:1;margin-bottom:.4rem;}
+.sc1 .score-val{color:#dc2626;}
+.sc2 .score-val{color:#22c55e;}
+.sc3 .score-val{color:#d97706;}
+.score-lbl{font-size:.75rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;}
+.score-hint{font-size:.67rem;margin-top:.35rem;}
+
+/* SLIDE 2 */
+#slide-current{background:#0d1117;padding:80px 0;}
+.slide-header{max-width:1200px;margin:0 auto;padding:0 3rem 2rem;display:flex;align-items:flex-end;justify-content:space-between;}
+.slide-num{font-family:'Playfair Display',serif;font-size:4rem;font-weight:900;color:rgba(134,239,172,.18);line-height:1;margin-right:1rem;}
+.slide-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#fff;}
+.slide-sub{font-size:.88rem;color:#6b7280;margin-top:.2rem;}
+.slide-badge{font-size:.75rem;font-weight:700;padding:.35rem .9rem;border-radius:20px;background:#fee2e2;color:#dc2626;}
+.browser-wrap{max-width:1200px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:280px 1fr;gap:2rem;align-items:start;}
+.issues-panel{position:sticky;top:72px;}
+.issues-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#6b7280;margin-bottom:1rem;font-weight:600;}
+.issue-btn{width:100%;text-align:left;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:.85rem 1rem;margin-bottom:.55rem;cursor:pointer;transition:all .22s;display:flex;align-items:flex-start;gap:.75rem;color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;}
+.issue-btn:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);color:#fff;}
+.issue-btn.active{border-color:#dc2626;background:rgba(220,38,38,.08);color:#fff;}
+.sev-badge{font-size:.6rem;font-weight:700;padding:.2rem .5rem;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.sev-crit{background:#fee2e2;color:#dc2626;}
+.sev-high{background:#fef3c7;color:#d97706;}
+.sev-med{background:#dbeafe;color:#1d4ed8;}
+.ib-text{font-size:.82rem;line-height:1.4;}
+.ib-text strong{display:block;font-size:.86rem;margin-bottom:.15rem;}
+.browser-frame{border-radius:14px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.4);background:#1a1a1a;}
+.browser-chrome{background:#2a2a2a;padding:.6rem 1rem;display:flex;align-items:center;gap:.75rem;}
+.tls{display:flex;gap:.4rem;}
+.tl{width:10px;height:10px;border-radius:50%;}
+.tl-r{background:#ff5f56;}.tl-y{background:#ffbd2e;}.tl-g{background:#27c93f;}
+.url-bar{flex:1;background:#3a3a3a;border-radius:6px;padding:.3rem .75rem;font-size:.75rem;color:#999;text-align:center;}
+.sc-wrap{position:relative;}
+.sc-wrap img{width:100%;display:block;}
+.hotspot{position:absolute;left:0;width:100%;border:2.5px solid transparent;cursor:pointer;transition:all .18s;border-radius:4px;}
+.hotspot:hover,.hotspot.hs-active{border-color:#dc2626;background:rgba(220,38,38,.1);box-shadow:inset 0 0 0 3px rgba(220,38,38,.12);}
+.hs-label{position:absolute;top:-30px;left:8px;background:#dc2626;color:#fff;font-size:.62rem;font-weight:700;padding:.22rem .6rem;border-radius:4px;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none;}
+.hotspot:hover .hs-label,.hotspot.hs-active .hs-label{opacity:1;}
+
+/* POPUPS */
+.popup-overlay{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .25s;}
+.popup-overlay.open{opacity:1;pointer-events:all;}
+.popup-card{background:#15181f;border:1px solid rgba(255,255,255,.1);border-radius:20px;width:min(920px,93vw);max-height:90vh;overflow-y:auto;box-shadow:0 40px 80px rgba(0,0,0,.6);transform:translateY(18px) scale(.97);transition:transform .28s cubic-bezier(.34,1.56,.64,1);position:relative;}
+.popup-overlay.open .popup-card{transform:none;}
+.popup-top{display:grid;grid-template-columns:1fr 1fr;border-radius:20px 20px 0 0;overflow:hidden;}
+.p-prob{padding:2rem;background:linear-gradient(135deg,#1a0909,#1e0c0c);border-right:1px solid rgba(255,255,255,.06);}
+.p-sol{padding:2rem;background:linear-gradient(135deg,#071710,#091e12);}
+.p-lbl{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.85rem;display:flex;align-items:center;gap:.5rem;}
+.p-lbl-r{color:#dc2626;}.p-lbl-r::before{content:'';width:16px;height:2px;background:#dc2626;border-radius:1px;}
+.p-lbl-g{color:#22c55e;}.p-lbl-g::before{content:'';width:16px;height:2px;background:#22c55e;border-radius:1px;}
+.p-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:.7rem;line-height:1.3;}
+.p-text{font-size:.88rem;line-height:1.65;color:rgba(255,255,255,.72);}
+.popup-body{padding:1.5rem 2rem;border-top:1px solid rgba(255,255,255,.06);}
+.p-section-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#6b7280;margin-bottom:.7rem;font-weight:600;}
+.popup-close{position:absolute;top:1.1rem;right:1.1rem;width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:background .15s;font-family:'DM Sans',sans-serif;z-index:10;}
+.popup-close:hover{background:rgba(255,255,255,.2);}
+
+/* WIREFRAME styles */
+.wf{background:#0d1117;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1rem;font-size:.8rem;overflow:hidden;}
+.wf-nav{background:#fff;border-radius:6px;padding:.55rem 1rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem;}
+.wf-nav-logo{background:#15803d;color:#fff;padding:.28rem .7rem;border-radius:5px;font-size:.7rem;font-weight:700;}
+.wf-nav-item{padding:.28rem .65rem;background:#f3f4f6;color:#374151;font-size:.68rem;font-weight:600;border-radius:5px;}
+.wf-nav-cta{margin-left:auto;background:#15803d;color:#fff;padding:.3rem .8rem;border-radius:6px;font-size:.68rem;font-weight:700;}
+.wf-hero{background:#f0fdf4;border-radius:6px;padding:1rem;display:grid;grid-template-columns:1.1fr .9fr;gap:.75rem;margin-bottom:.5rem;}
+.wf-h1{font-size:.9rem;font-weight:800;color:#14532d;margin-bottom:.4rem;line-height:1.25;}
+.wf-p{font-size:.68rem;color:#374151;margin-bottom:.5rem;line-height:1.4;}
+.wf-btn{display:inline-block;background:#15803d;color:#fff;padding:.3rem .75rem;border-radius:6px;font-size:.67rem;font-weight:700;margin-right:.35rem;margin-bottom:.3rem;}
+.wf-btn-sec{background:#fff;color:#15803d;border:1.5px solid #15803d;}
+.wf-trust{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.35rem;}
+.wf-trust-item{background:#dcfce7;color:#15803d;padding:.18rem .45rem;border-radius:10px;font-size:.6rem;font-weight:600;}
+.wf-img-ph{background:#d1fae5;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#15803d;font-size:.72rem;font-weight:600;min-height:80px;}
+.wf-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin-bottom:.5rem;}
+.wf-cat{background:#fff;border:1px solid #d1fae5;border-radius:6px;padding:.5rem .6rem;}
+.wf-cat-name{font-size:.65rem;font-weight:700;color:#14532d;margin-bottom:.2rem;}
+.wf-cat-desc{font-size:.58rem;color:#6b7280;line-height:1.3;}
+.wf-cat-price{font-size:.6rem;font-weight:700;color:#15803d;margin-top:.2rem;}
+.wf-prods{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;}
+.wf-prod{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:.75rem;}
+.wf-prod-badge{background:#fef3c7;color:#92400e;font-size:.55rem;font-weight:700;padding:.15rem .4rem;border-radius:10px;display:inline-block;margin-bottom:.35rem;}
+.wf-prod-img{background:#f0fdf4;border-radius:4px;height:48px;display:flex;align-items:center;justify-content:center;color:#15803d;font-size:.62rem;font-weight:600;margin-bottom:.35rem;}
+.wf-prod-name{font-size:.62rem;font-weight:700;color:#111;}
+.wf-prod-price{font-size:.68rem;font-weight:700;color:#15803d;margin-top:.18rem;}
+.wf-reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;}
+.wf-review{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:.65rem;}
+.wf-stars{color:#d97706;font-size:.68rem;margin-bottom:.25rem;}
+.wf-review-text{font-size:.6rem;color:#374151;line-height:1.4;font-style:italic;margin-bottom:.25rem;}
+.wf-reviewer{font-size:.58rem;color:#6b7280;font-weight:600;}
+.wf-nav-bar-bad{background:#fee2e2;border-radius:6px;padding:.5rem .75rem;font-size:.72rem;color:#991b1b;margin-top:.4rem;}
+.wf-cta-block{background:#f0fdf4;border:2px dashed #86efac;border-radius:8px;padding:1rem;text-align:center;}
+.wf-cta-title{font-size:.8rem;font-weight:700;color:#14532d;margin-bottom:.3rem;}
+.wf-form-row{display:flex;gap:.4rem;margin-top:.5rem;}
+.wf-input{flex:1;background:#fff;border:1px solid #d1fae5;border-radius:6px;padding:.35rem .5rem;font-size:.65rem;color:#6b7280;}
+.wf-submit{background:#15803d;color:#fff;border:none;padding:.35rem .75rem;border-radius:6px;font-size:.65rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+.wf-footer{background:#14532d;border-radius:6px;padding:.75rem 1rem;display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:.5rem;}
+.wf-footer-col-title{font-size:.65rem;font-weight:700;color:#86efac;margin-bottom:.4rem;}
+.wf-footer-item{font-size:.6rem;color:rgba(255,255,255,.7);margin-bottom:.2rem;}
+.wf-footer-item.bad{color:#fca5a5;text-decoration:line-through;}
+.wf-footer-item.good{color:#86efac;}
+
+/* SLIDE 3 — IMPROVED */
+#slide-improved{background:linear-gradient(180deg,#071a10 0%,#0a2218 100%);}
+.sec-intro{max-width:1200px;margin:0 auto;padding:0 3rem 2rem;}
+.tag-pill{display:inline-flex;gap:.4rem;align-items:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:.35rem .9rem;border-radius:20px;margin-bottom:1rem;}
+.tag-ok{background:rgba(34,197,94,.1);color:#22c55e;border:1px solid rgba(34,197,94,.2);}
+.sec-title{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:700;color:#fff;margin-bottom:.4rem;}
+.sec-sub{font-size:.9rem;color:#6b7280;}
+.browser-full{max-width:1200px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.5);background:#1a1a1a;}
+/* Mockup styles */
+.mock-nav{background:#fff;padding:.65rem 2rem;display:flex;align-items:center;gap:1rem;border-bottom:1px solid #e5e7eb;flex-wrap:wrap;}
+.mock-logo{font-family:'Playfair Display',serif;font-size:1rem;color:#14532d;font-weight:700;}
+.mock-nav-items{display:flex;gap:.05rem;flex-wrap:wrap;}
+.mock-nav-item{padding:.32rem .7rem;font-size:.78rem;color:#374151;font-weight:500;cursor:pointer;}
+.mock-nav-cta{margin-left:auto;background:#15803d;color:#fff;padding:.42rem 1rem;border-radius:7px;font-weight:700;font-size:.8rem;cursor:pointer;}
+.mock-hero{background:linear-gradient(135deg,#fff 55%,#f0fdf4 100%);padding:2.5rem 2rem 2rem;display:grid;grid-template-columns:1.15fr .85fr;gap:2rem;align-items:center;}
+.mock-h1{font-size:2rem;font-weight:800;color:#14532d;line-height:1.12;margin-bottom:.65rem;}
+.mock-h1 span{color:#15803d;}
+.mock-sub{font-size:.88rem;color:#4b5563;line-height:1.6;margin-bottom:1.1rem;}
+.mock-ctas{display:flex;gap:.65rem;flex-wrap:wrap;margin-bottom:.85rem;}
+.mock-cta-p{background:#15803d;color:#fff;padding:.65rem 1.35rem;border-radius:8px;font-weight:700;font-size:.87rem;cursor:pointer;box-shadow:0 4px 14px rgba(21,128,61,.3);}
+.mock-cta-s{background:#fff;color:#15803d;border:2px solid #15803d;padding:.62rem 1.1rem;border-radius:8px;font-weight:700;font-size:.85rem;cursor:pointer;}
+.mock-trust{display:flex;gap:.4rem;flex-wrap:wrap;}
+.mock-trust-item{background:#f0fdf4;color:#15803d;border:1px solid #86efac;padding:.28rem .75rem;border-radius:20px;font-size:.72rem;font-weight:600;}
+.mock-hero-img{background:linear-gradient(135deg,#dcfce7,#f0fdf4);border-radius:14px;display:flex;align-items:center;justify-content:center;min-height:220px;position:relative;}
+.mock-hero-product{text-align:center;color:#14532d;}
+.mock-hero-product .ph-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem;}
+.mock-hero-product .ph-sub{font-size:.75rem;color:#6b7280;}
+.mock-badge-float{position:absolute;top:12px;left:12px;background:#fff;border:1px solid #d1fae5;border-radius:8px;padding:.5rem .75rem;box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.mock-badge-float .bf-label{color:#15803d;font-size:.58rem;font-weight:700;margin-bottom:.15rem;}
+.mock-badge-float .bf-name{font-weight:700;color:#111;font-size:.8rem;}
+.mock-badge-float .bf-price{color:#6b7280;font-size:.7rem;}
+.mock-usp{background:#14532d;padding:.85rem 2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.mock-usp-item{display:flex;align-items:center;gap:.5rem;color:#fff;font-size:.75rem;font-weight:600;}
+.mock-usp-icon{font-size:1.1rem;}
+.mock-usp-sub{font-size:.68rem;opacity:.8;font-weight:400;}
+.mock-section{padding:1.5rem 2rem;}
+.mock-sec-title{font-size:1.05rem;font-weight:700;color:#14532d;text-align:center;margin-bottom:.3rem;}
+.mock-sec-sub{font-size:.75rem;color:#6b7280;text-align:center;margin-bottom:1rem;}
+.mock-cats{display:grid;grid-template-columns:repeat(5,1fr);gap:.65rem;}
+.mock-cat{background:#fff;border:1px solid #d1fae5;border-radius:10px;padding:.85rem .75rem;cursor:pointer;transition:border-color .2s;}
+.mock-cat:hover{border-color:#15803d;}
+.mock-cat-icon{font-size:1.3rem;margin-bottom:.35rem;}
+.mock-cat-name{font-size:.75rem;font-weight:700;color:#14532d;margin-bottom:.25rem;}
+.mock-cat-desc{font-size:.65rem;color:#6b7280;line-height:1.35;margin-bottom:.35rem;}
+.mock-cat-price{font-size:.7rem;font-weight:700;color:#15803d;margin-bottom:.45rem;}
+.mock-cat-btn{background:#15803d;color:#fff;padding:.28rem;border-radius:5px;font-size:.65rem;font-weight:700;text-align:center;}
+.mock-prods{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.mock-prod{border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;}
+.mock-prod.featured{border:2px solid #15803d;box-shadow:0 4px 20px rgba(21,128,61,.15);}
+.mock-prod-top{background:#f0fdf4;padding:.55rem .9rem;display:flex;justify-content:space-between;align-items:center;}
+.mock-prod-badge{font-size:.58rem;font-weight:700;padding:.18rem .5rem;border-radius:20px;}
+.mock-prod-stock{background:#dcfce7;color:#15803d;font-size:.58rem;font-weight:700;padding:.18rem .45rem;border-radius:10px;}
+.mock-prod-img{background:#f0fdf4;padding:.5rem;display:flex;justify-content:center;align-items:center;min-height:110px;font-size:.72rem;color:#15803d;font-weight:600;}
+.mock-prod-body{padding:.85rem 1rem;}
+.mock-prod-name{font-weight:700;color:#111;font-size:.88rem;margin-bottom:.18rem;}
+.mock-prod-desc{font-size:.7rem;color:#6b7280;margin-bottom:.35rem;line-height:1.45;}
+.mock-prod-stars{color:#d97706;font-size:.75rem;margin-bottom:.4rem;}
+.mock-prod-price{font-weight:800;color:#15803d;font-size:1rem;margin-bottom:.55rem;}
+.mock-prod-cta{background:#15803d;color:#fff;padding:.42rem;border-radius:6px;font-size:.77rem;font-weight:700;text-align:center;cursor:pointer;}
+.mock-reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;}
+.mock-review{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1rem;}
+.mock-review-top{display:flex;align-items:center;gap:.6rem;margin-bottom:.55rem;}
+.mock-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;flex-shrink:0;}
+.mock-reviewer-name{font-weight:600;font-size:.8rem;color:#111;}
+.mock-reviewer-sub{font-size:.65rem;color:#6b7280;}
+.mock-review-stars{color:#d97706;font-size:.78rem;margin-bottom:.4rem;}
+.mock-review-text{font-size:.77rem;color:#374151;font-style:italic;line-height:1.55;}
+
+/* SLIDE 4 */
+#slide-roadmap{background:#0d1117;}
+.road-grid{max-width:1100px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.road-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1.35rem 1.45rem;cursor:pointer;transition:all .22s;display:flex;align-items:flex-start;gap:.95rem;}
+.road-card:hover{background:rgba(134,239,172,.05);border-color:rgba(134,239,172,.22);transform:translateY(-2px);}
+.road-num{width:34px;height:34px;border-radius:50%;flex-shrink:0;background:#14532d;color:#86efac;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;}
+.road-content{flex:1;}
+.road-title{font-weight:600;font-size:.92rem;color:#fff;margin-bottom:.25rem;}
+.road-detail{font-size:.78rem;color:#6b7280;line-height:1.5;margin-bottom:.65rem;}
+.road-meta{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap;}
+.road-sev{font-size:.62rem;font-weight:700;padding:.18rem .55rem;border-radius:20px;}
+.road-effort{font-size:.65rem;font-weight:700;padding:.18rem .55rem;border-radius:20px;}
+.eff-low{background:#dcfce7;color:#16a34a;}
+.eff-med{background:#fef3c7;color:#d97706;}
+.road-week{margin-left:auto;font-size:.68rem;font-weight:600;color:#6b7280;background:rgba(255,255,255,.05);padding:.18rem .55rem;border-radius:6px;}
+.road-hint{font-size:.68rem;color:rgba(134,239,172,.45);margin-top:.4rem;transition:color .2s;}
+.road-card:hover .road-hint{color:rgba(134,239,172,.85);}
+
+/* SCORE popup */
+.score-popup{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .25s;}
+.score-popup.open{opacity:1;pointer-events:all;}
+.score-popup-card{background:#15181f;border:1px solid rgba(220,38,38,.2);border-radius:20px;width:min(800px,92vw);max-height:88vh;overflow-y:auto;box-shadow:0 40px 80px rgba(0,0,0,.6);padding:2.5rem;position:relative;}
+.score-criteria{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1.5rem 0;}
+.score-criterion{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1rem;display:flex;gap:.85rem;}
+.sc-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:.3rem;flex-shrink:0;}
+.sc-bar-bg{width:6px;height:52px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;position:relative;}
+.sc-bar-fill{position:absolute;bottom:0;left:0;width:100%;border-radius:3px;}
+.sc-score-num{font-size:.62rem;font-weight:700;}
+.sc-title{font-size:.86rem;font-weight:600;color:#fff;margin-bottom:.22rem;}
+.sc-desc{font-size:.73rem;color:#6b7280;line-height:1.5;}
+.roast-section{border-top:1px solid rgba(255,255,255,.07);padding-top:1.5rem;margin-top:1.5rem;}
+.roast-label{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#dc2626;margin-bottom:.85rem;display:flex;align-items:center;gap:.5rem;}
+.roast-label::before{content:'';width:16px;height:2px;background:#dc2626;border-radius:1px;}
+.roast-quote{font-size:.87rem;color:rgba(255,255,255,.72);line-height:1.75;font-style:italic;border-left:2px solid rgba(220,38,38,.35);padding-left:1rem;}
+.roast-quote p{margin-bottom:.85rem;}
+
+/* scrollbar */
+.gl-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:.85rem 1rem;}
+.gl-term{font-size:.9rem;font-weight:700;color:#86efac;margin-bottom:.3rem;}
+.gl-def{font-size:.82rem;color:rgba(255,255,255,.72);line-height:1.6;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:rgba(134,239,172,.18);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-logo">www.freshjuice.cz — CRO Audit</div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="goTo('slide-title')">Úvod</button>
+    <button class="nav-btn" onclick="goTo('slide-current')">01 Aktuální stav</button>
+    <button class="nav-btn" onclick="goTo('slide-improved')">02 Navrhovaná podoba</button>
+    <button class="nav-btn" onclick="goTo('slide-roadmap')">03 Roadmapa</button>
+  </div>
+  <button class="nav-btn" onclick="openGlossary()" style="border:1px solid rgba(134,239,172,.3);color:#86efac;">📖 Slovníček</button>
+  <div class="nav-score">Conversion score: 40/100</div>
+</nav>
+
+<!-- SLIDE 1: TITLE -->
+<section class="slide" id="slide-title">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="title-content">
+    <div>
+      <div class="title-label">CRO Audit · duben 2026</div>
+      <h1 class="title-h1">www.freshjuice.cz<br>má potenciál<br><span>+52% konverzí</span></h1>
+      <p class="title-sub">Analýza odhalila 10 prioritních bodů, které zákazníky odrazují od nákupu. Ukážeme kde je problém a jak ho opravit — konkrétně, krok za krokem.</p>
+      <div class="title-pills">
+        <button class="pill" onclick="goTo('slide-current')"><span class="num">01</span> Aktuální stav webu</button>
+        <button class="pill" onclick="goTo('slide-improved')"><span class="num">02</span> Navrhovaná podoba</button>
+        <button class="pill" onclick="goTo('slide-roadmap')"><span class="num">03</span> Roadmapa oprav</button>
+      </div>
+    </div>
+    <div class="score-cards">
+      <div class="score-card sc1" onclick="openScore()">
+        <div class="score-val">40</div>
+        <div class="score-lbl">Conversion score</div>
+        <div class="score-hint" style="color:rgba(220,38,38,.6);">→ jak jsme to změřili</div>
+      </div>
+      <div class="score-card sc2" onclick="openPotential()">
+        <div class="score-val">+52%</div>
+        <div class="score-lbl">Potenciál opravami</div>
+        <div class="score-hint" style="color:rgba(134,239,172,.6);">→ jak jsme to spočítali</div>
+      </div>
+      <div class="score-card sc3" onclick="goTo('slide-current')">
+        <div class="score-val">10</div>
+        <div class="score-lbl">Prioritních bodů</div>
+        <div class="score-hint" style="color:rgba(217,119,6,.6);">→ zobrazit detail</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 2: CURRENT -->
+<section class="slide" id="slide-current">
+  <div class="slide-header">
+    <div style="display:flex;align-items:flex-end;gap:1rem;">
+      <span class="slide-num">01</span>
+      <div>
+        <div class="slide-title">Aktuální stav webu</div>
+        <div class="slide-sub">Klikněte na červenou oblast nebo problém vlevo — zobrazí se detail + grafický návrh řešení</div>
+      </div>
+    </div>
+    <span class="slide-badge">ROAST</span>
+  </div>
+  <div class="browser-wrap">
+    <div class="issues-panel">
+      <div class="issues-lbl">Nalezené problémy</div>
+      <button class="issue-btn" id="ib-1" onclick="openIssue(1)"><span class="sev-badge sev-crit">KRITICKÉ</span><div class="ib-text"><strong>Slider bez obsahu — chybí H1 a CTA</strong>Hero je jen obrázek, zákazník neví co nakoupit.</div></button>
+      <button class="issue-btn" id="ib-2" onclick="openIssue(2)"><span class="sev-badge sev-crit">KRITICKÉ</span><div class="ib-text"><strong>V HERO chybí trust signály</strong>USP bary jsou schované níže, u drahého zboží to brzdí nákup.</div></button>
+      <button class="issue-btn" id="ib-3" onclick="openIssue(3)"><span class="sev-badge sev-high">VYSOKÉ</span><div class="ib-text"><strong>Link na cizí doménu v navigaci</strong>Čerstvé šťávy (freshup.cz) odvádí zákazníky pryč.</div></button>
+      <button class="issue-btn" id="ib-4" onclick="openIssue(4)"><span class="sev-badge sev-high">VYSOKÉ</span><div class="ib-text"><strong>Telefon není CTA</strong>Promarněná šance u drahého zboží — chybí "Poradíme vám".</div></button>
+      <button class="issue-btn" id="ib-5" onclick="openIssue(5)"><span class="sev-badge sev-high">VYSOKÉ</span><div class="ib-text"><strong>Kategorie bez kontextu</strong>Zákazník neví rozdíl mezi šnekovým a odstředivým.</div></button>
+      <button class="issue-btn" id="ib-6" onclick="openIssue(6)"><span class="sev-badge sev-med">STŘEDNÍ</span><div class="ib-text"><strong>Produkty bez důvodu výběru</strong>Proč zrovna tyto? Chybí kontext a struktura.</div></button>
+      <button class="issue-btn" id="ib-7" onclick="openIssue(7)"><span class="sev-badge sev-med">STŘEDNÍ</span><div class="ib-text"><strong>Tlačítko "Detail" místo akce</strong>Slabé CTA — neříká hodnotu dalšího kroku.</div></button>
+      <button class="issue-btn" id="ib-8" onclick="openIssue(8)"><span class="sev-badge sev-med">STŘEDNÍ</span><div class="ib-text"><strong>Žádný sociální důkaz</strong>Bez recenzí u prémiových spotřebičů zákazník nenakoupí.</div></button>
+      <button class="issue-btn" id="ib-9" onclick="openIssue(9)"><span class="sev-badge sev-med">STŘEDNÍ</span><div class="ib-text"><strong>Chybí mid-page CTA pro nerozhodnuté</strong>Většina návštěvníků odejde bez akce.</div></button>
+      <button class="issue-btn" id="ib-10" onclick="openIssue(10)"><span class="sev-badge sev-med">STŘEDNÍ</span><div class="ib-text"><strong>Chyby v patičce a legal</strong>Překlep "Ochodní podmínky", chybí IČO a adresa.</div></button>
+    </div>
+    <div class="browser-frame">
+      <div class="browser-chrome">
+        <div class="tls"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div>
+        <div class="url-bar">https://www.freshjuice.cz</div>
+      </div>
+      <div class="sc-wrap">
+        <img id="hero-ss" src="https://api.apiflash.com/v1/urltoimage?access_key=00582c03fd8c4724bbdbfe6082b8d14d&url=https%3A%2F%2Fwww.freshjuice.cz&width=1440&height=900&format=jpeg&quality=85&fresh=true&full_page=true&response_type=image" alt="www.freshjuice.cz screenshot" onerror="this.style.background='#1e2a1e';this.style.minHeight='600px';this.removeAttribute('onerror');">
+        <div class="hotspot" style="top:0%;height:8%;" data-n="3"><span class="hs-label">⚠ Navigace — link na cizí doménu</span></div>
+        <div class="hotspot" style="top:8%;height:18%;" data-n="1"><span class="hs-label">⚠ HERO — chybí H1 a CTA</span></div>
+        <div class="hotspot" style="top:26%;height:16%;" data-n="5"><span class="hs-label">⚠ Kategorie bez kontextu</span></div>
+        <div class="hotspot" style="top:50%;height:24%;" data-n="6"><span class="hs-label">⚠ Produkty bez důvodu výběru</span></div>
+        <div class="hotspot" style="top:74%;height:16%;" data-n="10"><span class="hs-label">⚠ Patička — chyby a chybějící legal</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 3: IMPROVED -->
+<section class="slide" id="slide-improved">
+  <div class="sec-intro">
+    <div class="tag-pill tag-ok">✓ Navrhovaná podoba</div>
+    <h2 class="sec-title">Jak by stránka měla vypadat</h2>
+    <p class="sec-sub">Konkrétní design vycházející z doporučení — přesná představa výsledku pro webmastera i majitele.</p>
+  </div>
+  <div class="browser-full" style="margin:0 3rem;">
+    <div class="browser-chrome">
+      <div class="tls"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div>
+      <div class="url-bar" style="color:#86efac;">www.freshjuice.cz ✓ po opravách</div>
+    </div>
+    <div style="background:#f8faf8;font-family:'DM Sans',sans-serif;">
+      <!-- NAV -->
+      <div class="mock-nav">
+        <div class="mock-logo">🍃 freshjuice.cz</div>
+        <div class="mock-nav-items">
+          <span class="mock-nav-item">Odšťavňovače ▾</span>
+          <span class="mock-nav-item">Citrusovače ▾</span>
+          <span class="mock-nav-item">Mixéry a blendery</span>
+          <span class="mock-nav-item">Pronájem</span>
+          <span class="mock-nav-item">O nás ▾</span>
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:.75rem;">
+          <span style="font-size:.78rem;color:#374151;">Potřebujete poradit?</span>
+          <span style="font-size:.8rem;font-weight:700;color:#15803d;">+420 774 631 631</span>
+          <span class="mock-nav-cta">Vybrat odšťavňovač →</span>
+        </div>
+      </div>
+      <!-- HERO -->
+      <div class="mock-hero">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:.5rem;background:#dcfce7;border:1px solid #86efac;border-radius:20px;padding:.28rem .8rem;font-size:.7rem;font-weight:700;color:#15803d;margin-bottom:.9rem;">⭐ 2 000+ spokojených zákazníků</div>
+          <div class="mock-h1">Prémiové odšťavňovače<br>pro <span>domácnost i gastro</span></div>
+          <p class="mock-sub">Vybereme s vámi správný typ. 20 let zkušeností, rychlé doručení, ověřené značky — Hurom, Kuvings a další.</p>
+          <div class="mock-ctas">
+            <span class="mock-cta-p">Vybrat odšťavňovač →</span>
+            <span class="mock-cta-s">Chci poradit s výběrem</span>
+          </div>
+          <div class="mock-trust">
+            <span class="mock-trust-item">✓ Doprava zdarma nad 5 000 Kč</span>
+            <span class="mock-trust-item">✓ 20 let v oboru</span>
+            <span class="mock-trust-item">✓ Česká firma</span>
+            <span class="mock-trust-item">✓ Jen prověřené značky</span>
+          </div>
+        </div>
+        <div class="mock-hero-img">
+          <div class="mock-badge-float">
+            <div class="bf-label">★ NEJOBLÍBENĚJŠÍ</div>
+            <div class="bf-name">Hurom H 400</div>
+            <div class="bf-price">16 900 Kč</div>
+          </div>
+          <div class="mock-hero-product">
+            <div style="font-size:3rem;margin-bottom:.5rem;">🥤</div>
+            <div class="ph-title">Hurom H 400</div>
+            <div class="ph-sub">Šnekový odšťavňovač</div>
+            <div style="color:#15803d;font-size:.8rem;font-weight:700;margin-top:.35rem;">16 900 Kč</div>
+          </div>
+        </div>
+      </div>
+      <!-- USP BAR -->
+      <div class="mock-usp">
+        <div class="mock-usp-item"><span class="mock-usp-icon">🚚</span><div><div>Doprava zdarma</div><div class="mock-usp-sub">nad 5 000 Kč</div></div></div>
+        <div class="mock-usp-item"><span class="mock-usp-icon">🏆</span><div><div>20 let v oboru</div><div class="mock-usp-sub">Odborné poradenství</div></div></div>
+        <div class="mock-usp-item"><span class="mock-usp-icon">⭐</span><div><div>2 000+ zákazníků</div><div class="mock-usp-sub">spokojených</div></div></div>
+        <div class="mock-usp-item"><span class="mock-usp-icon">📞</span><div><div>Poradenství zdarma</div><div class="mock-usp-sub">+420 774 631 631</div></div></div>
+      </div>
+      <!-- CATS -->
+      <div class="mock-section" style="background:#f8faf8;">
+        <div class="mock-sec-title">Co hledáte?</div>
+        <div class="mock-sec-sub">Vyberte kategorii — poradíme vám s výběrem</div>
+        <div class="mock-cats">
+          <div class="mock-cat"><div class="mock-cat-icon">🍎</div><div class="mock-cat-name">Šnekové odšťavňovače</div><div class="mock-cat-desc">Tiché, max. výtěžnost — ideální na zeleninu a každodenní použití.</div><div class="mock-cat-price">od 8 900 Kč</div><div class="mock-cat-btn">Zobrazit →</div></div>
+          <div class="mock-cat"><div class="mock-cat-icon">⚡</div><div class="mock-cat-name">Odstředivé</div><div class="mock-cat-desc">Rychlé na ovoce, dostupné — když chcete šťávu hned.</div><div class="mock-cat-price">od 2 500 Kč</div><div class="mock-cat-btn">Zobrazit →</div></div>
+          <div class="mock-cat"><div class="mock-cat-icon">🍊</div><div class="mock-cat-name">Citrusovače</div><div class="mock-cat-desc">Domácnost i gastronomie. Šťáva za 30 sekund.</div><div class="mock-cat-price">od 1 200 Kč</div><div class="mock-cat-btn">Zobrazit →</div></div>
+          <div class="mock-cat"><div class="mock-cat-icon">🥤</div><div class="mock-cat-name">Mixéry a blendery</div><div class="mock-cat-desc">Smoothie, polévky, omáčky — domácí i profi.</div><div class="mock-cat-price">od 3 200 Kč</div><div class="mock-cat-btn">Zobrazit →</div></div>
+          <div class="mock-cat"><div class="mock-cat-icon">📦</div><div class="mock-cat-name">Pronájem Hurom</div><div class="mock-cat-desc">Vyzkoušejte bez závazků. S dopravou a servisem.</div><div class="mock-cat-price">od 299 Kč/měs</div><div class="mock-cat-btn">Zjistit více →</div></div>
+        </div>
+      </div>
+      <!-- PRODUCTS -->
+      <div class="mock-section" style="background:#fff;border-top:1px solid #e5e7eb;">
+        <div class="mock-sec-title">Nejprodávanější modely (ověřeno zákazníky)</div>
+        <div class="mock-sec-sub">Doporučujeme podle použití a rozpočtu</div>
+        <div class="mock-prods">
+          <div class="mock-prod">
+            <div class="mock-prod-top"><span class="mock-prod-badge" style="background:#fef3c7;color:#92400e;">★ NEJOBLÍBENĚJŠÍ</span><span class="mock-prod-stock">SKLADEM</span></div>
+            <div class="mock-prod-img">🥤 Hurom H 400 bílý</div>
+            <div class="mock-prod-body">
+              <div class="mock-prod-name">Hurom H 400 bílý</div>
+              <div class="mock-prod-desc">Automatické čištění, tichý šnekový motor, moderní design.</div>
+              <div class="mock-prod-stars">★★★★★ (142 recenzí)</div>
+              <div class="mock-prod-price">16 900 Kč</div>
+              <div style="font-size:.68rem;color:#6b7280;margin-bottom:.5rem;">✓ Skladem · Doprava zdarma</div>
+              <div class="mock-prod-cta">Zobrazit a vybrat variantu →</div>
+            </div>
+          </div>
+          <div class="mock-prod featured">
+            <div class="mock-prod-top"><span class="mock-prod-badge" style="background:#dbeafe;color:#1e40af;">NEJLEPŠÍ CENA/VÝKON</span><span class="mock-prod-stock">SKLADEM</span></div>
+            <div class="mock-prod-img">🥤 Hurom H 320N černý</div>
+            <div class="mock-prod-body">
+              <div class="mock-prod-name">Hurom H 320N černý</div>
+              <div class="mock-prod-desc">Max. výtěžnost, 5 let záruka. Nejlepší poměr výkonu a ceny.</div>
+              <div class="mock-prod-stars">★★★★★ (89 recenzí)</div>
+              <div class="mock-prod-price">14 900 Kč</div>
+              <div style="font-size:.68rem;color:#6b7280;margin-bottom:.5rem;">✓ Skladem · Doprava zdarma</div>
+              <div class="mock-prod-cta">Zobrazit a vybrat variantu →</div>
+            </div>
+          </div>
+          <div class="mock-prod">
+            <div class="mock-prod-top"><span class="mock-prod-badge" style="background:#dcfce7;color:#15803d;">VYZKOUŠEJTE BEZ RIZIKA</span><span class="mock-prod-stock">DOSTUPNÉ</span></div>
+            <div class="mock-prod-img">📦 Pronájem Hurom H 400</div>
+            <div class="mock-prod-body">
+              <div class="mock-prod-name">Pronájem Hurom H 400</div>
+              <div class="mock-prod-desc">Hurom na zkoušku s dopravou a servisem. Zrušení kdykoliv.</div>
+              <div class="mock-prod-stars">★★★★☆ (34 recenzí)</div>
+              <div class="mock-prod-price">299 Kč / měsíc</div>
+              <div style="font-size:.68rem;color:#6b7280;margin-bottom:.5rem;">✓ Bez závazků · Doprava zahrnuta</div>
+              <div class="mock-prod-cta">Zjistit více →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- REVIEWS -->
+      <div class="mock-section" style="background:#f8faf8;border-top:1px solid #e5e7eb;">
+        <div class="mock-sec-title">Co říkají zákazníci</div>
+        <div class="mock-sec-sub">Ověřené recenze od skutečných zákazníků</div>
+        <div class="mock-reviews">
+          <div class="mock-review">
+            <div class="mock-review-top"><div class="mock-avatar" style="background:#dcfce7;color:#15803d;">JK</div><div><div class="mock-reviewer-name">Jana K.</div><div class="mock-reviewer-sub">Praha · Hurom H 400</div></div></div>
+            <div class="mock-review-stars">★★★★★</div>
+            <div class="mock-review-text">"H400 předčil všechna očekávání. Tichý, výkonný, snadno se čistí. Šťáva hustší než z odstředivky."</div>
+          </div>
+          <div class="mock-review">
+            <div class="mock-review-top"><div class="mock-avatar" style="background:#dbeafe;color:#1e40af;">TM</div><div><div class="mock-reviewer-name">Tomáš M.</div><div class="mock-reviewer-sub">Brno · H 320N</div></div></div>
+            <div class="mock-review-stars">★★★★★</div>
+            <div class="mock-review-text">"Zavolal jsem před nákupem — poradili mi přesně co potřebuji. Servis a znalosti na výborné úrovni!"</div>
+          </div>
+          <div class="mock-review">
+            <div class="mock-review-top"><div class="mock-avatar" style="background:#fef3c7;color:#92400e;">LP</div><div><div class="mock-reviewer-name">Lucie P.</div><div class="mock-reviewer-sub">Ostrava · Pronájem</div></div></div>
+            <div class="mock-review-stars">★★★★★</div>
+            <div class="mock-review-text">"Pronájem byl skvělý způsob jak si produkt vyzkoušet. Po měsíci jsem koupila H320N — perfektní."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 4: ROADMAP -->
+<section class="slide" id="slide-roadmap">
+  <div class="sec-intro">
+    <div class="tag-pill" style="background:rgba(29,78,216,.1);color:#60a5fa;border:1px solid rgba(29,78,216,.2);">03 Roadmapa</div>
+    <h2 class="sec-title">Co opravit a v jakém pořadí</h2>
+    <p class="sec-sub">Klikněte na kartu — otevře se náhled změny a přesné instrukce pro webmastera.</p>
+  </div>
+  <div class="road-grid">
+    <div class="road-card" data-n="1"><div class="road-num">1</div><div class="road-content"><div class="road-title">Slider bez obsahu — přidat H1 a CTA</div><div class="road-detail">Na první obrazovku přidat H1 + 1–2 věty hodnoty + primární CTA „Vybrat odšťavňovač".</div><div class="road-meta"><span class="road-sev sev-crit">⚡ KRITICKÉ</span><span class="road-effort eff-med">🔧 Střední effort</span><span class="road-week">Týden 1</span></div><div class="road-hint">↗ Klikněte pro náhled změny</div></div></div>
+    <div class="road-card" data-n="2"><div class="road-num">2</div><div class="road-content"><div class="road-title">Přidat trust signály do HERO</div><div class="road-detail">Pod CTA vložit 3–4 body: Doprava zdarma · Odborné poradenství · Česká firma · Jen prověřené značky.</div><div class="road-meta"><span class="road-sev sev-crit">⚡ KRITICKÉ</span><span class="road-effort eff-low">🔧 Nízký effort</span><span class="road-week">Týden 1</span></div><div class="road-hint">↗ Klikněte pro náhled změny</div></div></div>
+    <div class="road-card" data-n="3"><div class="road-num">3</div><div class="road-content"><div class="road-title">Odstranit link na freshup.cz z navigace</div><div class="road-detail">Přesunout „Čerstvé šťávy" do patičky. Zákazníci zůstanou v nákupním flow.</div><div class="road-meta"><span class="road-sev sev-high">⚡ VYSOKÉ</span><span class="road-effort eff-low">🔧 Nízký effort</span><span class="road-week">Týden 1</span></div><div class="road-hint">↗ Klikněte pro náhled změny</div></div></div>
+    <div class="road-card" data-n="4"><div class="road-num">4</div><div class="road-content"><div class="road-title">Telefon změnit na „Poradíme s výběrem" CTA</div><div class="road-detail">Přidat tlačítko „Zavolat poradci" s telefonním číslem a pracovní dobou.</div><div class="road-meta"><span class="road-sev sev-high">⚡ VYSOKÉ</span><span class="road-effort eff-low">🔧 Nízký effort</span><span class="road-week">Týden 1</span></div><div class="road-hint">↗ Klikněte pro náhled změny</div></div></div>
+    <div class="road-card" data-n="5"><div class="road-num">5</div><div class="road-content"><div class="road-title">Kategorie — přidat kontext a „pro koho"</div><div class="road-detail">Každá kategorie: 1 věta popis + cena „od X Kč" + tlačítko „Zobrazit →".</div><div class="road-meta"><span class="road-sev sev-high">⚡ VYSOKÉ</span><span class="road-effort eff-med">🔧 Střední effort</span><span class="road-week">Týden 1</span></div><div class="road-hint">↗ Klikněte pro náhled změny</div></div></div>
+    <div class="road-card" data-n="6"><div class="road-num">6</div><div class="road-content"><div class="road-title">Produkty — přidat strukturu a kontext</div><div class="road-detail">3 bloky: Domácnost, Náročné použití, Gastro. Sloučit varianty barev do jedné karty.</div><div class="road-meta"><span class="road-sev sev-med">⚡ STŘEDNÍ</span><span class="road-effort eff-med">🔧 Střední effort</span><span class="road-week">Týden 2</span></div><div class="road-hint">↗ Klikněte pro náhled změny</div></div></div>
+    <div class="road-card" data-n="7"><div class="road-num">7</div><div class="road-content"><div class="road-title">Tlačítko „Detail" → „Zobrazit a vybrat variantu"</div><div class="road-detail">Na kartě přidat 1 řádek benefitů: „Skladem · Doprava zdarma nad 5 000 Kč".</div><div class="road-meta"><span class="road-sev sev-med">⚡ STŘEDNÍ</span><span class="road-effort eff-low">🔧 Nízký effort</span><span class="road-week">Týden 2</span></div><div class="road-hint">↗ Klikněte pro náhled změny</div></div></div>
+    <div class="road-card" data-n="8"><div class="road-num">8</div><div class="road-content"><div class="road-title">Přidat sociální důkaz — recenze a hodnocení</div><div class="road-detail">Sekce s průměrným hodnocením, 3–6 citacemi a logy značek (Hurom, Kuvings).</div><div class="road-meta"><span class="road-sev sev-med">⚡ STŘEDNÍ</span><span class="road-effort eff-med">🔧 Střední effort</span><span class="road-week">Týden 2</span></div><div class="road-hint">↗ Klikněte pro náhled změny</div></div></div>
+    <div class="road-card" data-n="9"><div class="road-num">9</div><div class="road-content"><div class="road-title">Mid-page CTA pro nerozhodnuté</div><div class="road-detail">Blok „Nevíte, který odšťavňovač vybrat?" s mini formulářem pro doporučení.</div><div class="road-meta"><span class="road-sev sev-med">⚡ STŘEDNÍ</span><span class="road-effort eff-med">🔧 Střední effort</span><span class="road-week">Týden 2</span></div><div class="road-hint">↗ Klikněte pro náhled změny</div></div></div>
+    <div class="road-card" data-n="10"><div class="road-num">10</div><div class="road-content"><div class="road-title">Opravit patičku a doplnit legal</div><div class="road-detail">Opravit „Ochodní podmínky" → „Obchodní podmínky". Přidat IČO, adresu, reklamace.</div><div class="road-meta"><span class="road-sev sev-med">⚡ STŘEDNÍ</span><span class="road-effort eff-low">🔧 Nízký effort</span><span class="road-week">Týden 2</span></div><div class="road-hint">↗ Klikněte pro náhled změny</div></div></div>
+  </div>
+</section>
+
+
+<!-- GLOSSARY POPUP -->
+<div class="score-popup" id="glossary-popup" onclick="if(event.target===this)closeGlossary()">
+  <div class="score-popup-card" style="border-color:rgba(134,239,172,.25);max-width:700px;">
+    <button class="popup-close" onclick="closeGlossary()" style="top:1.25rem;right:1.25rem;">✕</button>
+    <div style="margin-bottom:1.5rem;">
+      <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:.5rem;">MARKETINGOVÝ SLOVNÍČEK</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:#fff;margin-bottom:.3rem;">Pojmy v tomto reportu</div>
+      <div style="font-size:.85rem;color:#6b7280;">Vysvětlení marketingových termínů, které používáme v analýze.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.6rem;"><div class="gl-item"><div class="gl-term">Hero sekce</div><div class="gl-def">První velká část stránky, kterou návštěvník vidí hned po načtení — ještě před scrollováním. Má zlomek sekundy na to, aby zákazníka zaujala a sdělila mu hlavní nabídku.</div></div><div class="gl-item"><div class="gl-term">Carousel / Slider</div><div class="gl-def">Automaticky se měnící obrázky nebo bannery. Problém: zákazník pasivně kouká místo aby klikal. Studie ukazují, že carousel snižuje konverze oproti statickému hero bloku s jasným sdělením.</div></div><div class="gl-item"><div class="gl-term">Headline / H1</div><div class="gl-def">Hlavní nadpis stránky. Měl by jasně říct: co prodáváte, pro koho a proč zrovna u vás. Jedno silné sdělení bije deset hezkých obrázků.</div></div><div class="gl-item"><div class="gl-term">CTA — Call to Action</div><div class="gl-def">Výzva k akci — tlačítko nebo odkaz vedoucí zákazníka k dalšímu kroku. Silné CTA: 'Vybrat produkt →', 'Chci poradit s výběrem'. Slabé CTA: 'Detail', 'Více', 'Klikněte zde'.</div></div><div class="gl-item"><div class="gl-term">USP — Unique Selling Proposition</div><div class="gl-def">Unikátní prodejní argument — proč koupit právě u vás a ne u konkurence. Např. délka zkušeností, servis, původ firmy, záruka, cena doručení.</div></div><div class="gl-item"><div class="gl-term">Trust signály</div><div class="gl-def">Prvky budující důvěru: recenze zákazníků, hodnocení, certifikáty, loga platebních metod, záruky vrácení peněz. Klíčové zejména u prémiového nebo neznámého zboží.</div></div><div class="gl-item"><div class="gl-term">Konverzní poměr</div><div class="gl-def">Procento návštěvníků, kteří provedou požadovanou akci (nákup, poptávka, registrace). Zvýšení z 2 % na 3 % znamená o 50 % více obchodů bez nutnosti přivádět více návštěvníků.</div></div><div class="gl-item"><div class="gl-term">Bounce rate / Míra odchodu</div><div class="gl-def">Procento návštěvníků, kteří odejdou ze stránky bez jakékoli interakce. Vysoký bounce rate (nad 70 %) signalizuje, že stránka nesplňuje očekávání nebo je matoucí.</div></div><div class="gl-item"><div class="gl-term">Above the fold</div><div class="gl-def">Část stránky viditelná bez scrollování — jako 'nad přehybem' novin. Nejcennější prostor na webu: zákazník ho vidí vždy, bez ohledu na to, jak dlouho na stránce zůstane.</div></div><div class="gl-item"><div class="gl-term">Sociální důkaz</div><div class="gl-def">Důkaz, že jiní lidé produkt nebo službu koupili a jsou spokojeni. Recenze, počet zákazníků, citace. Přesvědčí efektivněji než sebehezčí fotografie nebo text.</div></div><div class="gl-item"><div class="gl-term">Lead / Poptávka</div><div class="gl-def">Potenciální zákazník, který projevil zájem — vyplnil formulář, zanechal e-mail nebo zavolal. Mid-page CTA je nástroj jak zachytit i ty, kteří ještě nejsou připraveni nakoupit.</div></div><div class="gl-item"><div class="gl-term">PDP — Product Detail Page</div><div class="gl-def">Stránka s detailem konkrétního produktu nebo služby. Zákazník sem přichází těsně před rozhodnutím o nákupu — proto má CTA na produktové kartě zásadní vliv na konverzi.</div></div></div></div></div>
+      <div class="score-criterion"><div class="sc-bar-wrap"><div class="sc-bar-bg"><div class="sc-bar-fill" style="height:25%;background:#dc2626;"></div></div><div class="sc-score-num" style="color:#dc2626;">5/20</div></div><div><div class="sc-title">Trust signály a sociální důkaz</div><div class="sc-desc">Žádné recenze, hodnocení ani citace zákazníků. U prémiového zboží klíčové.</div></div></div>
+      <div class="score-criterion"><div class="sc-bar-wrap"><div class="sc-bar-bg"><div class="sc-bar-fill" style="height:35%;background:#d97706;"></div></div><div class="sc-score-num" style="color:#d97706;">7/20</div></div><div><div class="sc-title">Navigace & struktura</div><div class="sc-desc">7 položek, odkaz na cizí doménu, žádné vizuální CTA tlačítko.</div></div></div>
+      <div class="score-criterion"><div class="sc-bar-wrap"><div class="sc-bar-bg"><div class="sc-bar-fill" style="height:35%;background:#d97706;"></div></div><div class="sc-score-num" style="color:#d97706;">7/20</div></div><div><div class="sc-title">Produktové stránky</div><div class="sc-desc">„Detail" jako CTA, bez mikro-USP, bez kontextu proč právě tyto produkty.</div></div></div>
+      <div class="score-criterion"><div class="sc-bar-wrap"><div class="sc-bar-bg"><div class="sc-bar-fill" style="height:45%;background:#d97706;"></div></div><div class="sc-score-num" style="color:#d97706;">9/20</div></div><div><div class="sc-title">Kategorie & orientace</div><div class="sc-desc">Rozcestník bez popisu a cen — zákazník neví kde kliknout.</div></div></div>
+      <div class="score-criterion"><div class="sc-bar-wrap"><div class="sc-bar-bg"><div class="sc-bar-fill" style="height:45%;background:#1d4ed8;"></div></div><div class="sc-score-num" style="color:#1d4ed8;">9/20</div></div><div><div class="sc-title">Technické provedení</div><div class="sc-desc">Web běží dobře, ale chybí optimalizace konverzního toku.</div></div></div>
+    </div>
+    <div class="roast-section">
+      <div class="roast-label">ROAST — přátelsky, ale bez rukavičiček</div>
+      <div class="roast-quote">
+        <p>Na první dobrou to vypadá jako slušný e-shop, ale jako landing page pro prodej dražších odšťavňovačů (8–17k) to hraje až moc „katalog" a málo „důvod proč koupit právě tady a právě teď".</p>
+        <p>V hero máte slider s hezkými obrázky… a tím to končí. Žádný jasný headline, žádný benefit, žádná hlavní akce. U produktu za 16 900 Kč uživatel nechce jen koukat na fotku, chce ujištění, že kupuje správně.</p>
+        <p>Header je přeplněný a hlavní menu má navíc odkaz „Čerstvé šťávy" vedoucí pryč na jinou doménu (freshup.cz). To je na homepage e-shopu docela odvážná strategie: „tady máte košík… a tady dveře ven".</p>
+        <p>A sociální důkaz je prakticky nulový. Žádné hodnocení, žádné recenze, žádná čísla. U prémiových spotřebičů je trust a guidance často půlka konverze — tady je to zatím jen decentní náznak.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POTENTIAL POPUP -->
+<div class="score-popup" id="potential-popup" onclick="if(event.target===this)closePotential()">
+  <div class="score-popup-card" style="border-color:rgba(34,197,94,.2);">
+    <button class="popup-close" onclick="closePotential()">✕</button>
+    <div style="margin-bottom:1.5rem;">
+      <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#22c55e;margin-bottom:.5rem;">ODHAD NÁRŮSTU KONVERZÍ</div>
+      <div style="font-family:'Playfair Display',serif;font-size:4rem;font-weight:900;color:#22c55e;line-height:1;margin-bottom:.4rem;">+52%</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.3rem;">Kde ten nárůst vzniká</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.65rem;margin-bottom:2rem;">
+      <div style="display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:.85rem 1rem;"><div style="width:34px;height:34px;border-radius:50%;background:#14532d;color:#86efac;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">1</div><div style="flex:1;"><div style="font-size:.85rem;font-weight:600;color:#fff;">Slider → prodejní HERO blok</div><div style="font-size:.72rem;color:#6b7280;">Více prokliků do kategorií a product listingů</div></div><div style="font-size:1.05rem;font-weight:800;color:#22c55e;">+25%</div></div>
+      <div style="display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:.85rem 1rem;"><div style="width:34px;height:34px;border-radius:50%;background:#14532d;color:#86efac;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">2</div><div style="flex:1;"><div style="font-size:.85rem;font-weight:600;color:#fff;">Přidat recenze a sociální důkaz</div><div style="font-size:.72rem;color:#6b7280;">U prémiového zboží zvyšuje konverzi výrazně</div></div><div style="font-size:1.05rem;font-weight:800;color:#22c55e;">+20%</div></div>
+      <div style="display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:.85rem 1rem;"><div style="width:34px;height:34px;border-radius:50%;background:#14532d;color:#86efac;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">3</div><div style="flex:1;"><div style="font-size:.85rem;font-weight:600;color:#fff;">Kategorie s kontextem a „Decision helper"</div><div style="font-size:.72rem;color:#6b7280;">Méně bounce, více prokliků do správné kategorie</div></div><div style="font-size:1.05rem;font-weight:800;color:#22c55e;">+15%</div></div>
+      <div style="display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:.85rem 1rem;"><div style="width:34px;height:34px;border-radius:50%;background:#14532d;color:#86efac;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">4</div><div style="flex:1;"><div style="font-size:.85rem;font-weight:600;color:#fff;">Ostatní opravy (nav, CTA, patička)</div><div style="font-size:.72rem;color:#6b7280;">Celkové zlepšení konverzního toku</div></div><div style="font-size:1.05rem;font-weight:800;color:#22c55e;">+12%</div></div>
+    </div>
+    <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:1rem;"><div style="font-size:.85rem;font-weight:600;color:#fff;">≈ +52% — reálně dosažitelné při implementaci všech doporučení v průběhu 2 týdnů</div></div>
+  </div>
+</div>
+
+<script>
+
+const SS = 'https://api.apiflash.com/v1/urltoimage?access_key=00582c03fd8c4724bbdbfe6082b8d14d&url=https%3A%2F%2Fwww.freshjuice.cz&width=1440&height=900&format=jpeg&quality=85&fresh=true&full_page=true&response_type=image';
+
+document.getElementById('hero-ss').src = SS;
+
+const issues = {"1": {"title": "Slider bez obsahu — chybí H1 a CTA", "problem": "Hero je carousel s obrázky bez headline, benefitu a jasné akce. Zákazník neví, co je hlavní nabídka ani kam kliknout. U produktu za 16 900 Kč to nestačí.", "solution": "Na první obrazovku přidat H1 + 1–2 věty hodnoty + primární CTA.\n• H1: Prémiové odšťavňovače pro domácnost i gastro\n• Podnadpis: Vybereme s vámi správný typ. 20 let zkušeností.\n• Primární CTA: Vybrat odšťavňovač\n• Sekundární CTA: Chci poradit s výběrem", "sev": "KRITICKÉ", "sk": "HERO", "scrollPct": 8, "pagePct": 18, "wireframe": "<div class=\"wf\"><div class=\"wf-hero\"><div><div class=\"wf-h1\">Prémiové odšťavňovače<br>pro domácnost i gastro</div><div class=\"wf-p\">Vybereme s vámi správný typ. 20 let zkušeností, rychlé doručení, ověřené značky.</div><div><span class=\"wf-btn\">Vybrat odšťavňovač →</span><span class=\"wf-btn wf-btn-sec\">Chci poradit</span></div></div><div class=\"wf-img-ph\">Foto Hurom H400</div></div></div>", "impact": "≈ +10–25 % na prokliky do kategorií"}, "2": {"title": "V HERO chybí trust signály", "problem": "USP existují, ale jsou až pod rozcestníkem. Zákazník se v hero nerozhoduje s dostatečnou jistotou — chybí mu důvod proč nakoupit teď a tady.", "solution": "Pod CTA vložit krátký trust řádek:\n• Doprava zdarma nad 5 000 Kč\n• Odborné poradenství\n• Česká firma\n• Jen prověřené značky", "sev": "KRITICKÉ", "sk": "HERO", "scrollPct": 8, "pagePct": 18, "wireframe": "<div class=\"wf\"><div class=\"wf-hero\"><div><div class=\"wf-h1\">Prémiové odšťavňovače<br>pro domácnost i gastro</div><div class=\"wf-p\">Vybereme s vámi správný typ.</div><div><span class=\"wf-btn\">Vybrat odšťavňovač →</span></div><div class=\"wf-trust\"><span class=\"wf-trust-item\">✓ Doprava zdarma nad 5 000 Kč</span><span class=\"wf-trust-item\">✓ Odborné poradenství</span><span class=\"wf-trust-item\">✓ Česká firma</span><span class=\"wf-trust-item\">✓ Jen prověřené značky</span></div></div><div class=\"wf-img-ph\">Foto produktu</div></div></div>", "impact": "≈ +5–12 % CTR na hlavní CTA"}, "3": {"title": "Link na cizí doménu v navigaci", "problem": "Menu posílá uživatele mimo e-shop (jiná doména freshup.cz) v nejcitlivější části cesty. Zvyšuje odchody.", "solution": "Přesunout Čerstvé šťávy do patičky nebo sekundárního menu.\nPokud musí zůstat, označit jako externí s nižší vizuální prioritou.", "sev": "VYSOKÉ", "sk": "NAV", "scrollPct": 0, "pagePct": 8, "wireframe": "<div class=\"wf\"><div class=\"wf-nav\"><div class=\"wf-nav-logo\">freshjuice.cz</div><span class=\"wf-nav-item\">Odšťavňovače ▾</span><span class=\"wf-nav-item\">Citrusovače</span><span class=\"wf-nav-item\">Mixéry</span><span class=\"wf-nav-item\">Pronájem</span><span class=\"wf-nav-item\">O nás</span><div class=\"wf-nav-cta\">Vybrat →</div></div><div class=\"wf-nav-bar-bad\">✕ Odebrat z navigace: Čerstvé šťávy (freshup.cz) → přesunout do patičky</div></div>", "impact": "≈ +3–8 % více uživatelů zůstane v nákupním flow"}, "4": {"title": "Telefon není CTA — promarněná šance", "problem": "Telefon je jen číslo. U drahého zboží je asistovaný prodej klíčový — zákazník chce vědět, že se může zeptat.", "solution": "Přidat tlačítko vedle čísla:\n• Zavolat poradci (tel:+420774631631)\n• Přidat pracovní dobu (Po–Pá 8–17)\n• Alternativně: Napište nám", "sev": "VYSOKÉ", "sk": "NAV", "scrollPct": 0, "pagePct": 8, "wireframe": "<div class=\"wf\"><div class=\"wf-nav\"><div class=\"wf-nav-logo\">freshjuice.cz</div><span class=\"wf-nav-item\">Odšťavňovače ▾</span><span class=\"wf-nav-item\">Citrusovače</span><span class=\"wf-nav-item\">Mixéry</span><span class=\"wf-nav-item\">Pronájem</span><div style=\"margin-left:auto;display:flex;align-items:center;gap:.4rem;\"><span style=\"font-size:.65rem;color:#374151;padding:.28rem .5rem;background:#f0fdf4;border-radius:5px;font-weight:600;\">Po–Pá 8–17</span><span style=\"font-size:.68rem;font-weight:700;color:#15803d;padding:.28rem .6rem;background:#dcfce7;border:1px solid #86efac;border-radius:5px;\">📞 Zavolat poradci</span><div class=\"wf-nav-cta\">Vybrat →</div></div></div><div style=\"background:#f0fdf4;border-radius:6px;padding:.5rem;font-size:.7rem;color:#15803d;margin-top:.4rem;\">✓ Přidat: telefon jako klikatelné CTA + pracovní doba</div></div>", "impact": "≈ +2–6 % více asistovaných konverzí"}, "5": {"title": "Kategorie bez kontextu — nejasný výběr", "problem": "Rozcestník ukazuje kategorie, ale nepomáhá rozhodnout (šnekový vs odstředivý, domácnost vs gastro). Zákazník tápe kde kliknout.", "solution": "Ke každé kartě přidat 1 větu pro koho + mini-benefit + cenu:\n• Šnekové: tiché, vyšší výtěžnost, ideální na zeleninu (od 8 900 Kč)\n• Odstředivé: rychlé na ovoce, když chcete šťávu hned (od 2 500 Kč)\n• Přidat CTA: Pomozte mi vybrat", "sev": "VYSOKÉ", "sk": "CATS", "scrollPct": 26, "pagePct": 16, "wireframe": "<div class=\"wf\"><div style=\"font-size:.72rem;font-weight:700;color:#fff;text-align:center;margin-bottom:.5rem;\">Co hledáte?</div><div class=\"wf-cats\"><div class=\"wf-cat\"><div class=\"wf-cat-name\">🍎 Šnekové</div><div class=\"wf-cat-desc\">Tiché, max. výtěžnost — na zeleninu každý den.</div><div class=\"wf-cat-price\">od 8 900 Kč</div></div><div class=\"wf-cat\"><div class=\"wf-cat-name\">⚡ Odstředivé</div><div class=\"wf-cat-desc\">Rychlé na ovoce, dostupné — šťáva hned.</div><div class=\"wf-cat-price\">od 2 500 Kč</div></div><div class=\"wf-cat\"><div class=\"wf-cat-name\">🍊 Citrusovače</div><div class=\"wf-cat-desc\">Domácnost i gastronomie.</div><div class=\"wf-cat-price\">od 1 200 Kč</div></div><div class=\"wf-cat\"><div class=\"wf-cat-name\">📦 Pronájem</div><div class=\"wf-cat-desc\">Vyzkoušejte bez závazků.</div><div class=\"wf-cat-price\">od 299 Kč/měs</div></div></div></div>", "impact": "≈ +5–15 % více prokliků do správné kategorie"}, "6": {"title": "Produkty bez důvodu výběru", "problem": "Sekce Produkty je bez kontextu — proč právě tyto? Mnoho položek je jen barevná varianta téhož modelu — působí jako duplicita.", "solution": "Přejmenovat headline a strukturovat výběr:\n• Nejprodávanější modely (ověřeno zákazníky)\n• 3 bloky: Domácnost, Náročné použití, Gastro\n• Sloučit varianty barev do jedné karty s volbou na detailu", "sev": "STŘEDNÍ", "sk": "PRODUCTS", "scrollPct": 50, "pagePct": 24, "wireframe": "<div class=\"wf\"><div style=\"font-size:.72rem;font-weight:700;color:#fff;text-align:center;margin-bottom:.5rem;\">Nejprodávanější modely (ověřeno zákazníky)</div><div class=\"wf-prods\"><div class=\"wf-prod\"><div class=\"wf-prod-badge\">★ NEJOBLÍBENĚJŠÍ</div><div class=\"wf-prod-img\">🥤 Hurom H 400</div><div class=\"wf-prod-name\">Hurom H 400 bílý</div><div class=\"wf-prod-price\">16 900 Kč</div><div style=\"font-size:.6rem;color:#6b7280;margin:.2rem 0;\">bílá · stříbrná · černá</div></div><div class=\"wf-prod\"><div class=\"wf-prod-badge\" style=\"background:#dbeafe;color:#1e40af;\">CENA/VÝKON</div><div class=\"wf-prod-img\">🥤 Hurom H 320N</div><div class=\"wf-prod-name\">Hurom H 320N černý</div><div class=\"wf-prod-price\">14 900 Kč</div></div><div class=\"wf-prod\"><div class=\"wf-prod-badge\" style=\"background:#f0fdf4;color:#15803d;\">PRONÁJEM</div><div class=\"wf-prod-img\">📦 Pronájem</div><div class=\"wf-prod-name\">Pronájem Hurom</div><div class=\"wf-prod-price\">299 Kč/měs</div></div></div></div>", "impact": "≈ +4–10 % zlepšení prokliku do detailu"}, "7": {"title": "Tlačítko Detail — slabé CTA", "problem": "Detail je slabé a nenaznačuje hodnotu dalšího kroku. Chybí rychlá cesta do košíku a přehled benefitů na kartě.", "solution": "Primární tlačítko: Zobrazit a vybrat variantu\nNa kartě přidat 1 řádek benefitů:\n• Skladem · Doprava zdarma nad 5 000 Kč", "sev": "STŘEDNÍ", "sk": "PRODUCTS", "scrollPct": 50, "pagePct": 24, "wireframe": "<div class=\"wf\"><div class=\"wf-prods\"><div class=\"wf-prod\"><div class=\"wf-prod-badge\">★ NEJOBLÍBENĚJŠÍ</div><div class=\"wf-prod-img\">🥤 Hurom H 400</div><div class=\"wf-prod-name\">Hurom H 400 bílý</div><div class=\"wf-prod-price\">16 900 Kč</div><div style=\"font-size:.6rem;color:#15803d;margin:.25rem 0;\">✓ Skladem · Doprava zdarma nad 5 000 Kč</div><div style=\"background:#dc2626;color:#fff;padding:.28rem;border-radius:5px;font-size:.65rem;font-weight:700;text-align:center;margin-bottom:.3rem;\">✕ Detail</div><div style=\"background:#15803d;color:#fff;padding:.28rem;border-radius:5px;font-size:.65rem;font-weight:700;text-align:center;\">✓ Zobrazit a vybrat variantu →</div></div></div></div>", "impact": "≈ +6–14 % více kliků do PDP"}, "8": {"title": "Žádný sociální důkaz", "problem": "Na homepage chybí recenze a důvěryhodné signály. U prémiových spotřebičů to výrazně brzdí nákup — zákazník potřebuje ujištění od jiných lidí.", "solution": "Vložit sekci Hodnocení zákazníků:\n• Průměrné hodnocení (4,8/5) + počet recenzí\n• 3–6 konkrétních citací s jménem a produktem\n• Loga značek: Hurom (Officiální prodejce)", "sev": "STŘEDNÍ", "sk": "SOCIAL", "scrollPct": 64, "pagePct": 12, "wireframe": "<div class=\"wf\"><div style=\"text-align:center;margin-bottom:.6rem;\"><span style=\"font-size:1rem;font-weight:800;color:#fff;\">4,8</span><span style=\"font-size:.7rem;color:#d97706;\"> ★★★★★</span><span style=\"font-size:.65rem;color:#6b7280;\"> (327 recenzí)</span></div><div class=\"wf-reviews\"><div class=\"wf-review\"><div class=\"wf-stars\">★★★★★</div><div class=\"wf-review-text\">\"H400 předčil všechna očekávání. Tichý, výkonný.\"</div><div class=\"wf-reviewer\">Jana K. · Hurom H 400</div></div><div class=\"wf-review\"><div class=\"wf-stars\">★★★★★</div><div class=\"wf-review-text\">\"Skvělý servis, poradili přesně co potřebuji.\"</div><div class=\"wf-reviewer\">Tomáš M. · H320N</div></div><div class=\"wf-review\"><div class=\"wf-stars\">★★★★★</div><div class=\"wf-review-text\">\"Pronájem byl skvělý způsob jak vyzkoušet.\"</div><div class=\"wf-reviewer\">Lucie P. · Pronájem</div></div></div></div>", "impact": "≈ +8–20 % na konverzi u nových návštěv"}, "9": {"title": "Chybí mid-page CTA pro nerozhodnuté", "problem": "Na stránce chybí lead-capture pro nerozhodnuté (typicky majorita návštěvníků). Zákazník odejde bez akce.", "solution": "Blok Nevíte, který odšťavňovač vybrat?:\n• Text: Napište nám, doporučíme model podle rozpočtu\n• Form: E-mail + Na co budete odšťavňovač používat?\n• Tlačítko: Chci doporučit model", "sev": "STŘEDNÍ", "sk": "PRODUCTS", "scrollPct": 50, "pagePct": 24, "wireframe": "<div class=\"wf\"><div class=\"wf-cta-block\"><div class=\"wf-cta-title\">Nevíte, který odšťavňovač vybrat?</div><div style=\"font-size:.7rem;color:#374151;margin-bottom:.5rem;\">Napište nám — doporučíme model podle rozpočtu a použití do 2 minut.</div><div class=\"wf-form-row\"><input class=\"wf-input\" placeholder=\"Váš e-mail\" readonly><button class=\"wf-submit\">Chci doporučit model →</button></div></div></div>", "impact": "≈ +3–9 % více leadů"}, "10": {"title": "Chyby v patičce a legal", "problem": "V patičce je překlep Ochodní podmínky. Chybí IČO, adresa, informace o reklamacích — to snižuje důvěru v checkoutu.", "solution": "Opravit text: Obchodní podmínky\nPřidat do footeru:\n• Název firmy + IČO + adresa\n• Provozní doba\n• Odkaz Reklamace a vrácení\n• Ikony plateb/dopravy", "sev": "STŘEDNÍ", "sk": "FOOTER", "scrollPct": 74, "pagePct": 16, "wireframe": "<div class=\"wf\"><div class=\"wf-footer\"><div><div class=\"wf-footer-col-title\">Kontakt & firma</div><div class=\"wf-footer-item\">freshjuice.cz s.r.o.</div><div class=\"wf-footer-item\">IČO: 123 456 78</div><div class=\"wf-footer-item\">Ulice 1, Praha 1</div><div class=\"wf-footer-item\">Po–Pá 8–17</div></div><div><div class=\"wf-footer-col-title\">Informace</div><div class=\"wf-footer-item bad\">Ochodní podmínky ✕</div><div class=\"wf-footer-item good\">Obchodní podmínky ✓</div><div class=\"wf-footer-item good\">Reklamace a vrácení ✓</div></div><div><div class=\"wf-footer-col-title\">Přesunuté sem</div><div class=\"wf-footer-item good\">Čerstvé šťávy (freshup.cz) ✓</div><div class=\"wf-footer-item\" style=\"font-size:.57rem;color:rgba(255,255,255,.4);\">z hlavní navigace</div></div></div></div>", "impact": "≈ +1–4 %; snížení nedůvěry v checkoutu"}};
+
+
+
+
+function closeIssue() {
+  document.getElementById('issue-popup').classList.remove('open');
+  document.querySelectorAll('.issue-btn').forEach(function(b){b.classList.remove('active');});
+  document.body.style.overflow = '';
+}
+function closeIssueOnBg(e){if(e.target===document.getElementById('issue-popup'))closeIssue();}
+
+function openRoad(n) {
+  var is = issues[n]; if(!is) return;
+  document.getElementById('rp-title').textContent = is.title;
+  document.getElementById('rp-before').innerHTML = (is.problem||'').replace(/\n/g,'<br>');
+  document.getElementById('rp-after').innerHTML = (is.solution||'').replace(/\n/g,'<br>').replace(/• /g,'<br>• ');
+  var sectionCenter = (is.scrollPct || 0) + (is.pagePct || 15) / 2;
+  var bgPos = 'center ' + sectionCenter.toFixed(1) + '%';
+  var body = '';
+  body += '<div class="p-section-lbl">Screenshot — aktuální stav sekce</div>';
+  body += '<div style="height:200px;border-radius:10px;border:2px solid #dc2626;overflow:hidden;background-image:url('+SS+');background-size:100% auto;background-position:'+bgPos+';background-repeat:no-repeat;"></div>';
+  body += '<div class="p-section-lbl" style="margin-top:1.25rem;">Grafický návrh změny</div>';
+  body += (is.wireframe || '');
+  document.getElementById('rp-body').innerHTML = body;
+  document.getElementById('road-popup').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeRoad(){document.getElementById('road-popup').classList.remove('open');document.body.style.overflow='';}
+function closeRoadOnBg(e){if(e.target===document.getElementById('road-popup'))closeRoad();}
+
+function openScore(){document.getElementById('score-popup').classList.add('open');document.body.style.overflow='hidden';}
+function closeScore(){document.getElementById('score-popup').classList.remove('open');document.body.style.overflow='';}
+function openPotential(){document.getElementById('potential-popup').classList.add('open');document.body.style.overflow='hidden';}
+function openGlossary(){document.getElementById('glossary-popup').classList.add('open');document.body.style.overflow='hidden';}
+function closeGlossary(){document.getElementById('glossary-popup').classList.remove('open');document.body.style.overflow='';}
+function closePotential(){document.getElementById('potential-popup').classList.remove('open');document.body.style.overflow='';}
+
+function goTo(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
+
+// Nav active state
+var secs=['slide-title','slide-current','slide-improved','slide-roadmap'];
+var btns=document.querySelectorAll('.nav-btn');
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var i=secs.indexOf(e.target.id);btns.forEach(function(b,j){b.classList.toggle('active',i===j);});}});},{threshold:0.4});
+secs.forEach(function(id){var el=document.getElementById(id);if(el)obs.observe(el);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeIssue();closeRoad();closeScore();closePotential();closeGlossary();}});
+function openIssue(n) {
+  var is = issues[n]; if(!is) return;
+  document.getElementById('pp-title').textContent = is.title;
+  document.getElementById('pp-problem').innerHTML = (is.problem||'').replace(/\n/g,'<br>').replace(/• /g,'<br>• ');
+  document.getElementById('pp-solution').innerHTML = (is.solution||'').replace(/\n/g,'<br>').replace(/• /g,'<br>• ');
+  var body = '';
+  body += '<div class="p-section-lbl">Screenshot — označená oblast</div>';
+  // Crop: show the section of the screenshot
+  // We know section is at scrollPct% from top of full-page image
+  // Container height 220px, we want to show pagePct% of the page
+  // Approach: use background-size and background-position
+  // background-size: 100% auto → image scales to container width
+  // background-position: center Y% where Y positions the section center
+  var sectionCenter = (is.scrollPct || 0) + (is.pagePct || 15) / 2;
+  var bgPos = 'center ' + sectionCenter.toFixed(1) + '%';
+  body += '<div style="height:220px;border-radius:10px;border:2px solid #dc2626;overflow:hidden;position:relative;background-image:url('+SS+');background-size:100% auto;background-position:'+bgPos+';background-repeat:no-repeat;">';
+  body += '<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(220,38,38,.9);padding:.3rem .7rem;font-size:.68rem;font-weight:700;color:#fff;">⚠ '+is.title+'</div></div>';
+  body += '<div class="p-section-lbl" style="margin-top:1.25rem;">Grafický návrh řešení</div>';
+  body += (is.wireframe || '');
+  if(is.impact){
+    body += '<div class="p-section-lbl" style="margin-top:1rem;">Očekávaný dopad</div>';
+    body += '<div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:.8rem;font-size:.83rem;color:rgba(255,255,255,.8);">'+is.impact+'</div>';
+  }
+  document.getElementById('pp-body').innerHTML = body;
+  document.querySelectorAll('.issue-btn').forEach(function(b){b.classList.remove('active');});
+  var btn = document.getElementById('ib-'+n); if(btn) btn.classList.add('active');
+  document.getElementById('issue-popup').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.querySelectorAll('.hotspot').forEach(function(h){h.classList.remove('hs-active');});
+}
+
+function closeIssue() {
+  document.getElementById('issue-popup').classList.remove('open');
+  document.querySelectorAll('.issue-btn').forEach(function(b){b.classList.remove('active');});
+  document.body.style.overflow = '';
+}
+function closeIssueOnBg(e){if(e.target===document.getElementById('issue-popup'))closeIssue();}
+
+function openRoad(n) {
+  var is = issues[n]; if(!is) return;
+  document.getElementById('rp-title').textContent = is.title;
+  document.getElementById('rp-before').innerHTML = is.problem.replace(/\n/g,'<br>');
+  document.getElementById('rp-after').innerHTML = is.solution.replace(/\n/g,'<br>').replace(/• /g,'<br>• ');
+  var body = '';
+  body += '<div class="p-section-lbl">Screenshot — aktuální stav</div>';
+  body += '<div style="height:200px;border-radius:10px;border:2px solid #dc2626;overflow:hidden;background-image:url('+SS+');background-size:100% auto;background-position:'+is.pos+';background-repeat:no-repeat;"></div>';
+  body += '<div class="p-section-lbl" style="margin-top:1.25rem;">Grafický návrh změny</div>';
+  body += getWF(is.sk);
+  document.getElementById('rp-body').innerHTML = body;
+  document.getElementById('road-popup').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeRoad(){document.getElementById('road-popup').classList.remove('open');document.body.style.overflow='';}
+function closeRoadOnBg(e){if(e.target===document.getElementById('road-popup'))closeRoad();}
+
+function openScore(){document.getElementById('score-popup').classList.add('open');document.body.style.overflow='hidden';}
+function closeScore(){document.getElementById('score-popup').classList.remove('open');document.body.style.overflow='';}
+function openPotential(){document.getElementById('potential-popup').classList.add('open');document.body.style.overflow='hidden';}
+function openGlossary(){document.getElementById('glossary-popup').classList.add('open');document.body.style.overflow='hidden';}
+function closeGlossary(){document.getElementById('glossary-popup').classList.remove('open');document.body.style.overflow='';}
+function closePotential(){document.getElementById('potential-popup').classList.remove('open');document.body.style.overflow='';}
+
+function goTo(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
+
+// Nav active state
+var secs=['slide-title','slide-current','slide-improved','slide-roadmap'];
+var btns=document.querySelectorAll('.nav-btn');
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var i=secs.indexOf(e.target.id);btns.forEach(function(b,j){b.classList.toggle('active',i===j);});}});},{threshold:0.4});
+secs.forEach(function(id){var el=document.getElementById(id);if(el)obs.observe(el);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeIssue();closeRoad();closeScore();closePotential();closeGlossary();}});
+
+// Road card click delegation - safer than inline onclick for sandboxed environments
+document.querySelectorAll('.road-card').forEach(function(card) {
+  card.addEventListener('click', function() {
+    var n = parseInt(this.getAttribute('data-n'));
+    if (n) openRoad(n);
+  });
+});
+
+// Hotspot click delegation
+document.querySelectorAll('.hotspot').forEach(function(hs) {
+  hs.addEventListener('click', function() {
+    var n = parseInt(this.getAttribute('data-n'));
+    if (n) openIssue(n);
+  });
+});
+
+</script>
+</body>
+</html>
