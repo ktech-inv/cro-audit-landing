@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obchodní podmínky — KAI Tech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #070d1f;
+  --navy2: #0c1530;
+  --blue: #1e6bff;
+  --cyan: #00c2ff;
+  --white: #ffffff;
+  --gray: #8899bb;
+  --gray2: #c4d0e8;
+  --border: rgba(100,140,255,0.15);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  line-height: 1.7;
+}
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 3rem;
+  background: rgba(7,13,31,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: .85rem;
+  color: var(--gray);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-back:hover { color: var(--white); }
+
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 7rem 2rem 5rem;
+}
+.doc-tag {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: .75rem;
+}
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  margin-bottom: .5rem;
+}
+.doc-meta {
+  font-size: .82rem;
+  color: var(--gray);
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 2.5rem 0 .75rem;
+}
+p {
+  font-size: .95rem;
+  color: var(--gray2);
+  margin-bottom: .75rem;
+}
+ul {
+  margin: .5rem 0 .75rem 1.25rem;
+  color: var(--gray2);
+  font-size: .95rem;
+}
+ul li { margin-bottom: .35rem; }
+.highlight-box {
+  background: rgba(30,107,255,0.06);
+  border: 1px solid rgba(30,107,255,0.2);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.highlight-box p { margin: 0; color: var(--gray2); font-size: .9rem; }
+strong { color: var(--white); font-weight: 600; }
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+footer {
+  background: var(--navy2);
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 3rem;
+  text-align: center;
+  font-size: .78rem;
+  color: var(--gray);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <svg width="28" height="32" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+      <defs>
+        <linearGradient id="kaiG2" x1="0" y1="40" x2="36" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1e6bff"/>
+          <stop offset="100%" stop-color="#7eb3ff"/>
+        </linearGradient>
+      </defs>
+      <path d="M4 36 Q18 28 32 36" stroke="url(#kaiG2)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M18 4 L31 34 L5 34 Z" fill="url(#kaiG2)" opacity="0.9"/>
+      <path d="M18 18 L23 30 L13 30 Z" fill="#070d1f"/>
+      <circle cx="18" cy="3" r="2.2" fill="#00c2ff"/>
+      <line x1="18" y1="0.5" x2="18" y2="5.5" stroke="#00c2ff" stroke-width="1" opacity="0.6"/>
+    </svg>
+    KAI<span>Tech</span>
+  </a>
+  <a href="/" class="nav-back">← Zpět na hlavní stránku</a>
+</nav>
+
+<div class="container">
+  <div class="doc-tag">Právní dokumenty</div>
+  <h1>Obchodní podmínky</h1>
+  <div class="doc-meta">
+    Platné od 1. 6. 2026 · KAI Tech · Ctibor Klíma · IČO: 02235471
+  </div>
+
+  <h2>1. Provozovatel a kontakt</h2>
+  <p>Poskytovatelem služby CRO Audit je:</p>
+  <p>
+    <strong>Ctibor Klíma</strong> (dále jen „poskytovatel")<br>
+    Obchodní název: KAI Tech<br>
+    IČO: 02235471<br>
+    Provozovna: Renneská třída 765/42, 639 00, Brno - Štýřice<br>
+    Email: <a href="mailto:info@kaitechinvest.com">info@kaitechinvest.com</a><br>
+    Web: <a href="https://audit.kaitechinvest.com">audit.kaitechinvest.com</a>
+  </p>
+  <p>Poskytovatel není plátcem DPH.</p>
+
+  <h2>2. Předmět služby</h2>
+  <p>Službou se rozumí automatizovaná analýza zadané webové stránky (dále „CRO Audit") zahrnující:</p>
+  <ul>
+    <li>Automatické pořízení screenshotů zadané URL</li>
+    <li>Analýzu konverzních bariér pomocí AI (GPT-4o)</li>
+    <li>Generování interaktivního HTML reportu s doporučeními</li>
+    <li>Zaslání odkazu na report na e-mail zákazníka</li>
+    <li>Dostupnost reportu bez omezení platnosti</li>
+  </ul>
+
+  <div class="highlight-box">
+    <p>⚠️ <strong>Upozornění:</strong> CRO Audit je generován automaticky pomocí umělé inteligence. Doporučení mají informativní charakter a nepředstavují záruku dosažení konkrétních obchodních výsledků. Poskytovatel neručí za přesnost, úplnost ani výsledky implementace doporučení.</p>
+  </div>
+
+  <h2>3. Objednávka a uzavření smlouvy</h2>
+  <p>Smlouva o poskytnutí služby je uzavřena okamžikem úspěšného dokončení platby prostřednictvím platební brány Stripe. Zákazník je povinen zadat platnou URL webové stránky a funkční e-mailovou adresu.</p>
+  <p>Zadáním URL a provedením platby zákazník potvrzuje, že je oprávněn nechat analyzovat zadanou webovou stránku a souhlasí s těmito obchodními podmínkami.</p>
+
+  <h2>4. Cena a platební podmínky</h2>
+  <p>Cena služby CRO Audit je <strong>1 990 Kč</strong> za jeden report. Platba probíhá jednorázově prostřednictvím platební brány Stripe (platba kartou). Cena je konečná a nezahrnuje DPH (poskytovatel není plátcem DPH).</p>
+
+  <h2>5. Dodání služby</h2>
+  <p>Report je zpravidla doručen e-mailem do <strong>5–10 minut</strong> od úspěšného zaplacení. V případě technických komplikací může dodání trvat až 30 minut. Odkaz na report je dostupný bez časového omezení.</p>
+
+  <h2>6. Omezení služby</h2>
+  <p>Službu nelze poskytnout v případě, že:</p>
+  <ul>
+    <li>Zadaná URL není veřejně dostupná (vyžaduje přihlášení, je chráněna heslem)</li>
+    <li>Web blokuje automatizované prohlížeče (firewall, Cloudflare ochrana)</li>
+    <li>URL je neplatná nebo nefunkční</li>
+    <li>Web obsahuje obsah porušující právní předpisy</li>
+  </ul>
+  <p>V těchto případech zákazník obdrží informační e-mail a report bude zpracován ručně na základě veřejně dostupných informací o webu — bez příplatku, do 24 hodin. Pokud ani ruční zpracování nebude možné, bude platba vrácena v plné výši.</p>
+
+  <h2>7. Odstoupení od smlouvy a reklamace</h2>
+  <p>V případě, že automatické generování reportu selže, poskytovatel report zpracuje ručně a doručí do 24 hodin od platby — bez příplatku.</p>
+  <p>Zákazník má právo na vrácení platby v plné výši pouze v případě, že report nebyl doručen ani ručně zpracován do 48 hodin od platby z důvodů na straně poskytovatele.</p>
+  <p>Žádost o vrácení platby zasílejte na <a href="mailto:info@kaitechinvest.com">info@kaitechinvest.com</a>. Vrácení proběhne na původní platební metodu do 5 pracovních dnů.</p>
+  <p>Vzhledem k digitální povaze služby a okamžitému zahájení zpracování po zaplacení <strong>zákazník bere na vědomí, že po vygenerování reportu nevzniká právo na odstoupení od smlouvy</strong> podle § 1829 odst. 1 OZ (digitální obsah dodaný se souhlasem zákazníka před uplynutím lhůty pro odstoupení).</p>
+
+  <h2>8. Odpovědnost</h2>
+  <p>Poskytovatel neodpovídá za:</p>
+  <ul>
+    <li>Výsledky implementace doporučení z reportu</li>
+    <li>Nepřímé, následné nebo ušlé zisky zákazníka</li>
+    <li>Dočasnou nedostupnost služby z důvodu technické údržby</li>
+    <li>Přesnost AI-generovaných doporučení</li>
+  </ul>
+  <p>Celková odpovědnost poskytovatele je omezena na cenu zaplacené služby.</p>
+
+  <h2>9. Duševní vlastnictví</h2>
+  <p>Zákazník obdrží licenci k osobnímu a firemnímu užití vygenerovaného reportu. Report nesmí být dále prodáván, šířen jako vlastní dílo nebo použit k trénování AI modelů bez souhlasu poskytovatele.</p>
+
+  <h2>10. Rozhodné právo a řešení sporů</h2>
+  <p>Tyto podmínky se řídí právem České republiky. Případné spory budou řešeny primárně dohodou, jinak u příslušného soudu v ČR. Zákazník může využít platformu pro online řešení sporů EU: <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a>.</p>
+
+  <h2>11. Změny podmínek</h2>
+  <p>Poskytovatel je oprávněn tyto podmínky měnit. O změnách bude zákazník informován e-mailem nebo oznámením na webu. Podmínky platné v době objednávky jsou závazné pro daný obchodní případ.</p>
+
+  <h2>12. Kontakt</h2>
+  <p>Dotazy a reklamace zasílejte na: <a href="mailto:info@kaitechinvest.com">info@kaitechinvest.com</a></p>
+</div>
+
+<footer>
+  © 2026 KAI Tech · Ctibor Klíma · IČO: 02235471 ·
+  <a href="/vop.html" style="color:inherit;">Obchodní podmínky</a> ·
+  <a href="/gdpr.html" style="color:inherit;">Ochrana osobních údajů</a>
+</footer>
+
+</body>
+</html>
