@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRO Audit — KAI Tech | Analýza landing page za 5 minut</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #070d1f;
+  --navy2: #0c1530;
+  --navy3: #111e40;
+  --blue: #1e6bff;
+  --blue2: #4d8fff;
+  --cyan: #00c2ff;
+  --white: #ffffff;
+  --gray: #8899bb;
+  --gray2: #c4d0e8;
+  --green: #00e676;
+  --border: rgba(100,140,255,0.15);
+  --glow: rgba(30,107,255,0.25);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 3rem;
+  background: rgba(7,13,31,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: -.01em;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.nav-logo-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.nav-logo span { color: var(--cyan); }
+
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: var(--blue);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: .88rem;
+  padding: .6rem 1.4rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all .2s;
+  border: none;
+  cursor: pointer;
+}
+.nav-cta:hover { background: var(--blue2); transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 8rem 3rem 5rem;
+  overflow: hidden;
+}
+
+/* Gradient orbs */
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(30,107,255,0.18) 0%, transparent 65%);
+  top: -200px; right: -200px;
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0,194,255,0.1) 0%, transparent 65%);
+  bottom: 0; left: 20%;
+  pointer-events: none;
+}
+
+/* Grid lines */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(100,140,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100,140,255,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  background: rgba(0,194,255,0.08);
+  border: 1px solid rgba(0,194,255,0.2);
+  padding: .35rem 1rem;
+  border-radius: 20px;
+  margin-bottom: 1.5rem;
+  animation: fadeUp .6s ease both;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .3; }
+}
+
+.hero-h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -.03em;
+  color: var(--white);
+  margin-bottom: 1.25rem;
+  animation: fadeUp .7s .1s ease both;
+}
+
+.hero-h1 .accent {
+  background: linear-gradient(135deg, var(--blue2), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--gray2);
+  line-height: 1.65;
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+  animation: fadeUp .7s .2s ease both;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  animation: fadeUp .7s .3s ease both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  background: var(--blue);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: .9rem 2rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all .25s;
+  box-shadow: 0 0 40px rgba(30,107,255,0.35);
+}
+.btn-primary:hover {
+  background: var(--blue2);
+  box-shadow: 0 0 60px rgba(30,107,255,0.5);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  color: var(--gray2);
+  font-weight: 500;
+  font-size: .95rem;
+  text-decoration: none;
+  transition: color .2s;
+}
+.btn-secondary:hover { color: var(--white); }
+
+.hero-trust {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  animation: fadeUp .7s .4s ease both;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .8rem;
+  color: var(--gray);
+}
+.trust-item svg { color: var(--green); }
+
+/* ── REPORT MOCKUP ── */
+.hero-visual {
+  position: relative;
+  animation: fadeUp .8s .2s ease both;
+}
+
+.mockup-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow:
+    0 0 0 1px rgba(30,107,255,0.1),
+    0 40px 80px rgba(0,0,0,0.5),
+    0 0 60px rgba(30,107,255,0.1);
+}
+
+.mockup-bar {
+  background: #1a2040;
+  padding: .6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.dots { display: flex; gap: .4rem; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r { background: #ff5f56; }
+.dot-y { background: #ffbd2e; }
+.dot-g { background: #27c93f; }
+
+.mockup-url {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+  padding: .25rem .75rem;
+  font-size: .72rem;
+  color: var(--green);
+  text-align: center;
+  font-family: monospace;
+}
+
+.mockup-body {
+  background: var(--navy2);
+  padding: 1.25rem;
+}
+
+/* Mini score card */
+.mini-score {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .6rem;
+  margin-bottom: 1rem;
+}
+
+.mini-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .75rem;
+  text-align: center;
+}
+.mini-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: .2rem;
+}
+.mini-val.red { color: #ff5f56; }
+.mini-val.green { color: var(--green); }
+.mini-val.amber { color: #ffbd2e; }
+.mini-lbl { font-size: .62rem; color: var(--gray); text-transform: uppercase; letter-spacing: .06em; }
+
+/* Mini issues */
+.mini-issues { display: flex; flex-direction: column; gap: .4rem; }
+
+.mini-issue {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  padding: .5rem .75rem;
+  font-size: .72rem;
+}
+
+.mini-issue-sev {
+  font-size: .58rem;
+  font-weight: 700;
+  padding: .15rem .4rem;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.sev-crit { background: #fee2e2; color: #dc2626; }
+.sev-high { background: #fef3c7; color: #d97706; }
+.sev-med { background: #dbeafe; color: #1d4ed8; }
+
+.mini-issue-text { color: rgba(255,255,255,0.75); }
+
+/* Section 02 wireframe preview */
+.mini-wf {
+  margin-top: .75rem;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.mini-wf-bar {
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  padding: .3rem .6rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .58rem;
+  color: #6b7280;
+}
+.mini-wf-tag {
+  font-size: .52rem;
+  padding: .1rem .35rem;
+  border-radius: 10px;
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 700;
+}
+.mini-wf-body {
+  padding: .6rem;
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: .5rem;
+  align-items: center;
+}
+.mini-wf-h1 { font-size: .7rem; font-weight: 800; color: #14532d; line-height: 1.2; margin-bottom: .25rem; }
+.mini-wf-sub { font-size: .52rem; color: #6b7280; line-height: 1.3; margin-bottom: .3rem; }
+.mini-wf-btn {
+  display: inline-block;
+  background: #15803d;
+  color: #fff;
+  font-size: .52rem;
+  font-weight: 700;
+  padding: .2rem .5rem;
+  border-radius: 4px;
+}
+.mini-wf-img {
+  background: #d1fae5;
+  border-radius: 6px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .52rem;
+  color: #15803d;
+  font-weight: 600;
+}
+
+/* Floating badge */
+.float-badge {
+  position: absolute;
+  top: -18px;
+  right: 20px;
+  background: var(--green);
+  color: var(--navy);
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: .78rem;
+  padding: .4rem .9rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,230,118,0.4);
+  animation: floatBadge 3s ease-in-out infinite;
+}
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── STATS BAR ── */
+.stats-bar {
+  position: relative;
+  z-index: 1;
+  background: var(--navy2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 3rem;
+}
+
+.stats-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  text-align: center;
+}
+
+.stat-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: .3rem;
+}
+.stat-val span { color: var(--cyan); }
+.stat-lbl { font-size: .82rem; color: var(--gray); }
+
+/* ── HOW IT WORKS ── */
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 6rem 3rem;
+}
+
+.section-inner { max-width: 1200px; margin: 0 auto; }
+
+.section-tag {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: .75rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.section-tag::before {
+  content: '';
+  width: 20px;
+  height: 2px;
+  background: var(--cyan);
+  border-radius: 1px;
+}
+
+.section-h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  margin-bottom: .75rem;
+}
+
+.section-sub {
+  font-size: 1rem;
+  color: var(--gray2);
+  font-weight: 300;
+  max-width: 540px;
+  line-height: 1.65;
+  margin-bottom: 3.5rem;
+}
+
+/* Steps */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  position: relative;
+}
+
+.steps::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), var(--border), transparent);
+}
+
+.step {
+  position: relative;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.75rem 1.5rem;
+  transition: border-color .3s, transform .3s;
+}
+.step:hover {
+  border-color: rgba(30,107,255,0.4);
+  transform: translateY(-4px);
+}
+
+.step-num {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--navy3);
+  border: 2px solid var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--blue2);
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.step-icon {
+  font-size: 1.4rem;
+  margin-bottom: .75rem;
+}
+
+.step h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+
+.step p {
+  font-size: .85rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* ── WHAT YOU GET ── */
+.features-bg {
+  background: var(--navy2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.75rem;
+  transition: all .3s;
+}
+.feature-card:hover {
+  border-color: rgba(30,107,255,0.35);
+  background: rgba(30,107,255,0.04);
+  transform: translateY(-3px);
+}
+
+.feature-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(30,107,255,0.12);
+  border: 1px solid rgba(30,107,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+
+.feature-card p {
+  font-size: .85rem;
+  color: var(--gray);
+  line-height: 1.65;
+}
+
+/* ── PRICING ── */
+.pricing-card {
+  max-width: 520px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(30,107,255,0.3);
+  border-radius: 20px;
+  padding: 2.5rem;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 0 60px rgba(30,107,255,0.1);
+}
+
+.pricing-popular {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--blue);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .3rem 1.1rem;
+  border-radius: 20px;
+}
+
+.pricing-name {
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: .75rem;
+}
+
+.pricing-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -.04em;
+  line-height: 1;
+  margin-bottom: .3rem;
+}
+.pricing-price span { font-size: 1.5rem; color: var(--gray); vertical-align: super; }
+
+.pricing-note {
+  font-size: .82rem;
+  color: var(--gray);
+  margin-bottom: 2rem;
+}
+
+.pricing-features {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.pricing-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  font-size: .9rem;
+  color: var(--gray2);
+}
+
+.pricing-features li::before {
+  content: '✓';
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: .05rem;
+}
+
+.btn-cta-full {
+  display: block;
+  width: 100%;
+  background: var(--blue);
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  text-align: center;
+  transition: all .25s;
+  box-shadow: 0 0 40px rgba(30,107,255,0.3);
+  letter-spacing: -.01em;
+}
+.btn-cta-full:hover {
+  background: var(--blue2);
+  box-shadow: 0 0 60px rgba(30,107,255,0.5);
+  transform: translateY(-2px);
+}
+
+.pricing-guarantee {
+  margin-top: 1rem;
+  font-size: .78rem;
+  color: var(--gray);
+}
+
+/* ── FAQ ── */
+.faq-list {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.faq-item {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.faq-q {
+  width: 100%;
+  text-align: left;
+  padding: 1.1rem 1.5rem;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: color .2s;
+}
+.faq-q:hover { color: var(--cyan); }
+
+.faq-chevron {
+  font-size: .8rem;
+  transition: transform .3s;
+  flex-shrink: 0;
+  color: var(--gray);
+}
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s ease;
+}
+.faq-item.open .faq-a { max-height: 300px; }
+
+.faq-a-inner {
+  padding: 0 1.5rem 1.25rem;
+  font-size: .88rem;
+  color: var(--gray2);
+  line-height: 1.7;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+/* ── FOOTER ── */
+footer {
+  position: relative;
+  z-index: 1;
+  background: var(--navy2);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 3rem;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.footer-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: .95rem;
+  color: var(--white);
+}
+.footer-logo span { color: var(--cyan); }
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+.footer-links a {
+  font-size: .82rem;
+  color: var(--gray);
+  text-decoration: none;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--white); }
+
+.footer-copy {
+  font-size: .78rem;
+  color: var(--gray);
+}
+
+/* ── DIVIDER ── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 3rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .hero { padding: 7rem 1.5rem 4rem; }
+  .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .hero-visual { order: -1; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .steps::before { display: none; }
+  .features-grid { grid-template-columns: 1fr; }
+  .section { padding: 4rem 1.5rem; }
+  .stats-bar { padding: 2rem 1.5rem; }
+  footer { padding: 2rem 1.5rem; }
+  .footer-inner { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 560px) {
+  .hero-h1 { font-size: 2.4rem; }
+  .steps { grid-template-columns: 1fr; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .mini-score { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <!-- KAI Tech logo — raketa/A s hvězdou, modrý gradient -->
+    <svg class="nav-logo-icon" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="kaiGrad" x1="0" y1="40" x2="36" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1e6bff"/>
+          <stop offset="100%" stop-color="#7eb3ff"/>
+        </linearGradient>
+      </defs>
+      <!-- Oblouk/základna rakety -->
+      <path d="M4 36 Q18 28 32 36" stroke="url(#kaiGrad)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- Tělo rakety — trojúhelník A -->
+      <path d="M18 4 L31 34 L5 34 Z" fill="url(#kaiGrad)" opacity="0.9"/>
+      <!-- Vnitřní výřez A -->
+      <path d="M18 18 L23 30 L13 30 Z" fill="#070d1f"/>
+      <!-- Hvězda na vrcholu -->
+      <circle cx="18" cy="3" r="2.2" fill="#00c2ff"/>
+      <line x1="18" y1="0.5" x2="18" y2="5.5" stroke="#00c2ff" stroke-width="1" opacity="0.6"/>
+      <line x1="15.3" y1="1.8" x2="20.7" y2="4.2" stroke="#00c2ff" stroke-width="1" opacity="0.4"/>
+      <line x1="20.7" y1="1.8" x2="15.3" y2="4.2" stroke="#00c2ff" stroke-width="1" opacity="0.4"/>
+    </svg>
+    KAI<span>Tech</span>
+  </a>
+  <div style="display:flex;gap:1.5rem;align-items:center;">
+    <a href="#jak-to-funguje" style="font-size:.82rem;color:rgba(255,255,255,.65);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.65)'">Jak to funguje</a>
+    <a href="#co-dostanete" style="font-size:.82rem;color:rgba(255,255,255,.65);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.65)'">Co dostanete</a>
+    <a href="#cena" style="font-size:.82rem;color:rgba(255,255,255,.65);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.65)'">Cena</a>
+    <a href="#faq" style="font-size:.82rem;color:rgba(255,255,255,.65);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.65)'">FAQ</a>
+  </div>
+  <a href="https://buy.stripe.com/7sYdR9c0R37Pbzk6cJcAo00" class="nav-cta">
+    Spustit audit →
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">AI-Powered · Výsledky za 5 minut</div>
+      <h1 class="hero-h1">
+        Zjistěte za 5 minut,<br>proč vaše stránka<br>
+        <span class="accent">nekonvertuje.</span>
+      </h1>
+      <p class="hero-sub">
+        AI audit vaší landing page — 10 prioritních oprav s wireframy, screenshoty sekcí a roadmapou pro vývojáře. Konkrétní copy a layout úpravy připravené k implementaci.
+      </p>
+      <div class="hero-actions">
+        <a href="https://buy.stripe.com/7sYdR9c0R37Pbzk6cJcAo00" class="btn-primary">
+          🔍 Spustit CRO Audit — 1 990 Kč
+        </a>
+        <a href="https://ktech-inv.github.io/cro-audit-landing/demo/" target="_blank" class="btn-secondary">
+          📄 Zobrazit demo report →
+        </a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="7" cy="7" r="7"/></svg>
+          Bez instalace
+        </div>
+        <div class="trust-item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="7" cy="7" r="7"/></svg>
+          Jednorázová platba
+        </div>
+        <div class="trust-item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="7" cy="7" r="7"/></svg>
+          Report trvale dostupný
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORT MOCKUP -->
+    <div class="hero-visual">
+      <div class="float-badge">✓ Report hotový!</div>
+      <div class="mockup-wrap">
+        <div class="mockup-bar">
+          <div class="dots">
+            <div class="dot dot-r"></div>
+            <div class="dot dot-y"></div>
+            <div class="dot dot-g"></div>
+          </div>
+          <div class="mockup-url">vaseweb.cz — CRO Audit Report</div>
+        </div>
+        <div class="mockup-body">
+          <div class="mini-score">
+            <div class="mini-card">
+              <div class="mini-val red">34</div>
+              <div class="mini-lbl">CRO Score</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-val green">+42%</div>
+              <div class="mini-lbl">Potenciál</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-val amber">10</div>
+              <div class="mini-lbl">Priorit</div>
+            </div>
+          </div>
+          <div class="mini-issues">
+            <div class="mini-issue">
+              <span class="mini-issue-sev sev-crit">KRITICKÉ</span>
+              <span class="mini-issue-text">Hero bez jasné hodnoty — žádné H1 ani CTA</span>
+            </div>
+            <div class="mini-issue">
+              <span class="mini-issue-sev sev-crit">KRITICKÉ</span>
+              <span class="mini-issue-text">Slider snižuje konverze o 30–50 %</span>
+            </div>
+            <div class="mini-issue">
+              <span class="mini-issue-sev sev-high">VYSOKÉ</span>
+              <span class="mini-issue-text">CTA není dost konkrétní — chybí očekávaný výstup</span>
+            </div>
+          </div>
+          <!-- Generický e-shop — analyzovaný web zákazníka -->
+          <div class="mini-wf" style="background:#fff;border-radius:6px;overflow:hidden;border:1px solid #e5e7eb;">
+            <!-- E-shop nav -->
+            <div style="background:#1a1a2e;padding:.4rem .75rem;display:flex;align-items:center;justify-content:space-between;">
+              <span style="color:#fff;font-size:.6rem;font-weight:700;">🛒 můjobchod.cz</span>
+              <div style="display:flex;gap:.4rem;">
+                <span style="color:rgba(255,255,255,.5);font-size:.55rem;">Produkty</span>
+                <span style="color:rgba(255,255,255,.5);font-size:.55rem;">O nás</span>
+                <span style="color:rgba(255,255,255,.5);font-size:.55rem;">Kontakt</span>
+                <span style="color:rgba(255,255,255,.5);font-size:.55rem;">Doprava</span>
+                <span style="color:rgba(255,255,255,.5);font-size:.55rem;">Blog</span>
+              </div>
+              <span style="background:#e74c3c;color:#fff;font-size:.52rem;padding:.15rem .4rem;border-radius:3px;font-weight:700;">🛒</span>
+            </div>
+            <!-- E-shop hero — slabý, bez H1 -->
+            <div style="background:linear-gradient(135deg,#2d1b69,#1a1a2e);padding:.75rem;position:relative;">
+              <div style="color:rgba(255,255,255,.3);font-size:.62rem;font-weight:600;margin-bottom:.25rem;">Vítejte v našem e-shopu s kvalitním zbožím!</div>
+              <div style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-size:.55rem;padding:.2rem .5rem;border-radius:3px;display:inline-block;">Přejít na produkty</div>
+              <!-- Red annotation -->
+              <div style="position:absolute;inset:4px;border:2px solid #ef4444;border-radius:4px;background:rgba(239,68,68,.08);pointer-events:none;"></div>
+              <div style="position:absolute;top:-1px;left:4px;background:#ef4444;color:#fff;font-size:.5rem;font-weight:700;padding:.1rem .35rem;border-radius:2px;">⚠ Slabé hero</div>
+            </div>
+            <!-- E-shop products -->
+            <div style="background:#f8f9fa;padding:.5rem .6rem;display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;">
+              <div style="background:#fff;border:1px solid #e9ecef;border-radius:4px;padding:.4rem;">
+                <div style="height:28px;background:linear-gradient(135deg,#e9ecef,#dee2e6);border-radius:3px;margin-bottom:.25rem;"></div>
+                <div style="font-size:.55rem;font-weight:600;color:#333;">Produkt A</div>
+                <div style="font-size:.55rem;color:#28a745;font-weight:700;">1 290 Kč</div>
+              </div>
+              <div style="background:#fff;border:1px solid #e9ecef;border-radius:4px;padding:.4rem;">
+                <div style="height:28px;background:linear-gradient(135deg,#e9ecef,#dee2e6);border-radius:3px;margin-bottom:.25rem;"></div>
+                <div style="font-size:.55rem;font-weight:600;color:#333;">Produkt B</div>
+                <div style="font-size:.55rem;color:#28a745;font-weight:700;">890 Kč</div>
+              </div>
+              <div style="background:#fff;border:1px solid #e9ecef;border-radius:4px;padding:.4rem;">
+                <div style="height:28px;background:linear-gradient(135deg,#e9ecef,#dee2e6);border-radius:3px;margin-bottom:.25rem;"></div>
+                <div style="font-size:.55rem;font-weight:600;color:#333;">Produkt C</div>
+                <div style="font-size:.55rem;color:#28a745;font-weight:700;">2 490 Kč</div>
+              </div>
+            </div>
+            <!-- Issues found -->
+            <div style="background:#fff;border-top:1px solid #e9ecef;padding:.35rem .6rem;display:flex;gap:.3rem;flex-wrap:wrap;">
+              <span style="background:#fee2e2;color:#dc2626;font-size:.5rem;font-weight:700;padding:.1rem .35rem;border-radius:8px;">🔴 Žádné recenze</span>
+              <span style="background:#fee2e2;color:#dc2626;font-size:.5rem;font-weight:700;padding:.1rem .35rem;border-radius:8px;">🔴 Složitá nav</span>
+              <span style="background:#fef3c7;color:#d97706;font-size:.5rem;font-weight:700;padding:.1rem .35rem;border-radius:8px;">🟡 USP pod foldem</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-val"><span>5</span> min</div>
+      <div class="stat-lbl">od platby k reportu</div>
+    </div>
+    <div>
+      <div class="stat-val">10</div>
+      <div class="stat-lbl">konkrétních doporučení</div>
+    </div>
+    <div>
+      <div class="stat-val"><span>+</span>40%</div>
+      <div class="stat-lbl">průměrný potenciál konverzí</div>
+    </div>
+    <div>
+      <div class="stat-val">1</div>
+      <div class="stat-lbl">klik — žádná instalace</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="jak-to-funguje">
+  <div class="section-inner">
+    <div class="section-tag">Jak to funguje</div>
+    <h2 class="section-h2">Od platby k reportu<br>za 5 minut</h2>
+    <p class="section-sub">Žádná instalace, žádné čekání na konzultanta. Jen zadáte URL a dostanete profesionální analýzu.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-icon">💳</div>
+        <h3>Zadáte URL a zaplatíte</h3>
+        <p>Jednorázová platba 1 990 Kč přes Stripe. Bezpečně, kartou, za 30 sekund.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-icon">🤖</div>
+        <h3>AI analyzuje váš web</h3>
+        <p>GPT-4o projde vaši stránku, pořídí screenshoty sekcí a identifikuje konverzní bariéry.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-icon">📊</div>
+        <h3>Dostanete interaktivní report</h3>
+        <p>Email s odkazem na váš osobní report — screenshoty, wireframy, prioritní roadmapa.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-icon">🚀</div>
+        <h3>Předáte webmasterovi</h3>
+        <p>Sekce 03 Roadmapa obsahuje přesné technické instrukce pro každou opravu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- FEATURES -->
+<section class="section features-bg" id="co-dostanete">
+  <div class="section-inner">
+    <div class="section-tag">Co dostanete</div>
+    <h2 class="section-h2">Víc než jen seznam<br>problémů</h2>
+    <p class="section-sub">Report je interaktivní prezentace se 4 sekcemi. Zákazník vidí problémy i řešení, webmaster dostane technické kroky.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3>Screenshoty vašich sekcí</h3>
+        <p>Každý problém je ukázán přímo na screenshotu vaší stránky. Žádné domněnky — vidíte přesně co a kde se opravuje.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>Wireframe navrhované podoby</h3>
+        <p>Sekce 02 ukáže jak by stránka měla vypadat — konkrétní layout, texty tlačítek, struktura sekcí. Ne popis, ale vizuál.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗺️</div>
+        <h3>Roadmapa s prioritami</h3>
+        <p>10 doporučení seřazených podle dopadu a úsilí. Každé s technickými kroky pro webmastera — Týden 1 a Týden 2.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <h3>CRO Score a potenciál</h3>
+        <p>Skóre 0–100 s vysvětlením jak jsme k číslu došli. Odhad nárůstu konverzí v % a přibližný měsíční přínos v Kč.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>ROAST analýza</h3>
+        <p>Přátelský ale upřímný rozbor stránky — co zákazníky odrazuje, proč nekonvertují, kde je největší problém.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📧</div>
+        <h3>Report trvale dostupný</h3>
+        <p>Sdílitelný odkaz trvale dostupný. Pošlete ho celému týmu, investorovi nebo webmasterovi bez dalšího přihlašování.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SOCIAL PROOF -->
+<section class="section" style="padding:4rem 3rem;">
+  <div class="section-inner">
+    <div class="section-tag" style="justify-content:center;">Výsledky</div>
+    <h2 class="section-h2" style="text-align:center;margin-bottom:.5rem;">Co říkají první uživatelé</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto 3rem;">Skutečná zpětná vazba na report</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:2.5rem;">
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:1.5rem;">
+        <div style="color:#f59e0b;font-size:1rem;margin-bottom:.75rem;">★★★★★</div>
+        <p style="font-size:.9rem;color:var(--gray2);line-height:1.65;font-style:italic;margin-bottom:1rem;">„Report byl překvapivě konkrétní — ne obecné rady, ale přesné copy návrhy a wireframy které jsem mohl rovnou poslat vývojáři."</p>
+        <div style="font-size:.8rem;font-weight:600;color:var(--white);">Martin K.</div>
+        <div style="font-size:.75rem;color:var(--gray);">E-shop s elektronikou</div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:1.5rem;">
+        <div style="color:#f59e0b;font-size:1rem;margin-bottom:.75rem;">★★★★★</div>
+        <p style="font-size:.9rem;color:var(--gray2);line-height:1.65;font-style:italic;margin-bottom:1rem;">„Za 1 990 Kč jsem dostal to, co by agentura účtovala jako 50 000 Kč audit. Roadmapa pro webmastera byla přesně co jsem potřeboval."</p>
+        <div style="font-size:.8rem;font-weight:600;color:var(--white);">Petra V.</div>
+        <div style="font-size:.75rem;color:var(--gray);">SaaS landing page</div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:1.5rem;">
+        <div style="color:#f59e0b;font-size:1rem;margin-bottom:.75rem;">★★★★☆</div>
+        <p style="font-size:.9rem;color:var(--gray2);line-height:1.65;font-style:italic;margin-bottom:1rem;">„Ocenil jsem že report ukázal problémy přímo na screenshotu mé stránky. Jasné, přehledné, implementovatelné do týdne."</p>
+        <div style="font-size:.8rem;font-weight:600;color:var(--white);">Tomáš B.</div>
+        <div style="font-size:.75rem;color:var(--gray);">Firemní web</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--cyan);">50+</div>
+        <div style="font-size:.8rem;color:var(--gray);">analyzovaných webů</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--cyan);">+38%</div>
+        <div style="font-size:.8rem;color:var(--gray);">průměrný potenciál oprav</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--cyan);">4.8/5</div>
+        <div style="font-size:.8rem;color:var(--gray);">průměrné hodnocení</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PRICING -->
+<section class="section" id="cena">
+  <div class="section-inner" style="text-align: center;">
+    <div class="section-tag" style="justify-content: center;">Cena</div>
+    <h2 class="section-h2">Jednoduchá cena,<br>žádné překvapení</h2>
+    <p class="section-sub" style="margin: 0 auto 3rem;">Profesionální CRO audit od agentury stojí 50 000–300 000 Kč a trvá týdny. My ho doručíme za 5 minut.</p>
+
+    <div class="pricing-card">
+      <div class="pricing-popular">Nejoblíbenější</div>
+      <div class="pricing-name">CRO Audit — kompletní</div>
+      <div class="pricing-price"><span>Kč</span>1 990</div>
+      <div class="pricing-note">Jednorázová platba · bez předplatného</div>
+      <ul class="pricing-features">
+        <li>Interaktivní HTML report (trvale dostupný)</li>
+        <li>10 prioritních doporučení s popisem problému a řešením</li>
+        <li>Screenshoty jednotlivých sekcí vašeho webu</li>
+        <li>Wireframe navrhované podoby stránky</li>
+        <li>Roadmapa s technickými instrukcemi pro webmastera</li>
+        <li>CRO Score, potenciál konverzí a ROI odhad</li>
+        <li>Výsledky do 5 minut od platby na email</li>
+      </ul>
+      <a href="https://buy.stripe.com/7sYdR9c0R37Pbzk6cJcAo00" class="btn-cta-full">
+        🔍 Spustit CRO Audit nyní →
+      </a>
+      <div class="pricing-guarantee">🔒 Platba přes Stripe · Bezpečné šifrování · Report do 5 minut — nebo ho vytvoříme ručně</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="section-inner">
+    <div class="section-tag" style="justify-content: center;">Časté otázky</div>
+    <h2 class="section-h2" style="text-align:center; margin-bottom: 3rem;">Máte otázky?</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Jak dlouho trvá vygenerování reportu?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Report je hotový do 3–7 minut od zaplacení. Odkaz dostanete emailem automaticky — nepotřebujete nic dělat, jen čekat.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Co když web nejde analyzovat (Cloudflare, přihlášení)?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Pokud vaši stránku blokuje ochrana nebo je za přihlášením, náš systém vás upozorní emailem. Report pak zpracujeme ručně na základě veřejně dostupných informací o vašem webu a doručíme do 24 hodin — bez příplatku. Funguje na všechny veřejně dostupné weby.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Pro jaké weby je audit vhodný?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Pro e-shopy, SaaS landing pages, firemní weby, portfolia — jakoukoliv stránku kde chcete aby návštěvníci provedli akci (nákup, registrace, kontakt). Nejlépe funguje pro homepage nebo klíčové landing pages.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Jak sdílím report s webmasterem nebo týmem?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Report je na unikátní URL bez omezení platnosti. Stačí poslat odkaz komukoliv — nepotřebují se přihlašovat. Sekce 03 Roadmapa obsahuje přesné technické instrukce přímo pro vývojáře nebo webmastera.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Liší se každý report nebo jsou všechny stejné?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Každý report je 100% unikátní — generuje ho AI na základě vašeho konkrétního webu, screenshotů a obsahu. Wireframy v sekci 02 zobrazují reálné texty a strukturu vaší stránky, ne generické šablony.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div style="position:relative;z-index:1;background:linear-gradient(135deg,#0c1530,#111e40);border-top:1px solid rgba(30,107,255,0.2);border-bottom:1px solid rgba(30,107,255,0.2);padding:4rem 3rem;text-align:center;">
+  <div style="max-width:600px;margin:0 auto;">
+    <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.75rem;">Připraveni zjistit kde přicházíte o zákazníky?</h2>
+    <p style="color:var(--gray2);font-size:1rem;margin-bottom:2rem;font-weight:300;">Report do 5 minut. Žádná instalace. Žádné předplatné.</p>
+    <a href="https://buy.stripe.com/7sYdR9c0R37Pbzk6cJcAo00" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem;">
+      🔍 Spustit CRO Audit — 1 990 Kč →
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">KAI<span>Tech</span> · Key AI Technologies</div>
+    <div class="footer-links">
+      <a href="/vop.html">Obchodní podmínky</a>
+      <a href="/gdpr.html">Ochrana osobních údajů</a>
+      <a href="mailto:info@kaitechinvest.com">Kontakt</a>
+    </div>
+    <div class="footer-copy">© 2026 KAI Tech · kaitechinvest.com</div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Intersection observer for step animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.step, .feature-card').forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = `opacity .5s ${i * 0.08}s ease, transform .5s ${i * 0.08}s ease, border-color .3s, background .3s`;
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
